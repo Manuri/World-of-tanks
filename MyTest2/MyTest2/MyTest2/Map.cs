@@ -33,7 +33,7 @@ namespace MyTest2
 
            // _lifePackList = new Dictionary<Point, Treasure>();
             _lifePackList = new ConcurrentDictionary<Point, Treasure>();
-            _gridLength = 20;
+            _gridLength = 10;
             _boardBlocks = new CompleteSquare[GridLength,GridLength];
             _noOfPlayers = 0;
         }

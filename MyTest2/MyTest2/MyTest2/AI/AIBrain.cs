@@ -50,13 +50,14 @@ namespace MyTest2.AI
         {
               while (true)
               {
-                  Statistics.getStatistics.checkPlayers();
+                 Statistics.getStatistics.checkPlayers();
                   if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
-                  {
-                      shoot();
+                 {
+                    shoot();
                       //Console.WriteLine("entered starter");
-                  }
-                  else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
+                }
+               else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
+                 // if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
                   {
                     Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
                     Console.WriteLine("globalUpdateCounter " + GameManager.getGameManager.globalUpdateCounter);

@@ -18,20 +18,22 @@ namespace MyTest2
 
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        SpriteFont font;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GraphicsDevice device;
+        Texture2D grid;
         Texture2D backgroundTexture;
         Texture2D[] tankTextures;
         Texture2D[] obstacleTextures;
         Texture2D coin;
         Texture2D lifePack;
-
+    
         int screenWidth;
         int screenHeight;
         int numberOfPlayers=5;
         float tankScaling;
-        //int widthOfABlock;
         float widthOfABlock;
         int gridLength;
         
@@ -56,7 +58,7 @@ namespace MyTest2
         protected override void Initialize()
         {
             this.IsMouseVisible = true;
-            graphics.PreferredBackBufferWidth = 700;
+            graphics.PreferredBackBufferWidth = 1100;
             graphics.PreferredBackBufferHeight = 700;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
@@ -70,11 +72,14 @@ namespace MyTest2
 
         protected override void LoadContent()
         {
+            font = Content.Load<SpriteFont>("myFont");
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             device = graphics.GraphicsDevice;
 
             backgroundTexture = Content.Load<Texture2D>("background1");
+
+            grid = Content.Load<Texture2D>("background");
 
             tankTextures = new Texture2D[numberOfPlayers];
 
@@ -94,13 +99,11 @@ namespace MyTest2
 
             screenWidth = device.PresentationParameters.BackBufferWidth;
             screenHeight = device.PresentationParameters.BackBufferHeight;
-
-            //Console.WriteLine(screenWidth+":"+screenHeight);
            
             //tankScaling = 0.7f;
             gridLength = Map.getMap.GridLength;
             //widthOfABlock = screenWidth / 20;
-            widthOfABlock = screenWidth / gridLength;
+            widthOfABlock = 700 / gridLength;
 
             //bd = new CompleteSquare[20, 20];
             bd = new CompleteSquare[gridLength, gridLength];
@@ -141,10 +144,12 @@ namespace MyTest2
 
             spriteBatch.Begin();
             drawGrid();
+            drawScenary();
             drawAllObstacles();
             drawTanks();
             drawCoinPiles();
             drawLifePacks();
+            DrawText();
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -152,10 +157,16 @@ namespace MyTest2
 
         private void drawGrid()
         {
-            Rectangle gridRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
+            Rectangle gridRectangle = new Rectangle(345, 0, screenWidth, screenHeight);
 
-            spriteBatch.Draw(backgroundTexture, gridRectangle, Color.White);
+            spriteBatch.Draw(grid, gridRectangle, Color.White);
 
+        }
+
+        private void drawScenary()
+        {
+            Rectangle screenRectangle = new Rectangle(0, 0, 700, 700);
+            spriteBatch.Draw(backgroundTexture, screenRectangle, Color.White);
         }
 
         private void drawObstacle(int x, int y, int type)
@@ -281,6 +292,30 @@ namespace MyTest2
             lifePacksToDraw = null;
         }
 
-       
+        private void DrawText()
+        {
+            tanks = Map.getMap.AllTanks;
+            spriteBatch.DrawString(font, "PlayerID", new Vector2(750, 400), Color.White);
+            spriteBatch.DrawString(font, "Coins", new Vector2(865,400), Color.White);
+            spriteBatch.DrawString(font, "Health", new Vector2(935, 400), Color.White);
+            spriteBatch.DrawString(font, "Points", new Vector2(1015, 400), Color.White);
+            spriteBatch.DrawString(font, "P0", new Vector2(750, 430), Color.White);
+            spriteBatch.DrawString(font, "P1", new Vector2(750, 450), Color.White);
+            spriteBatch.DrawString(font, "P2", new Vector2(750, 470), Color.White);
+            spriteBatch.DrawString(font, "P3", new Vector2(750, 490), Color.White);
+            spriteBatch.DrawString(font, "P4", new Vector2(750, 510), Color.White);
+            int i = 430;
+            
+               for(int j=0; j<5; j++) {
+                   if (tanks[j] != null)
+                   {
+                       spriteBatch.DrawString(font, tanks[j].Score.ToString(), new Vector2(1015, i), Color.White);
+                       spriteBatch.DrawString(font, tanks[j].Health.ToString(), new Vector2(935, i), Color.White);
+                       spriteBatch.DrawString(font, tanks[j].Coins.ToString(), new Vector2(865, i), Color.White);
+                       i = i + 20;
+                   }
+            }
+        }
+
     } 
 }
