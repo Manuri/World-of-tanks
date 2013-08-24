@@ -14,9 +14,9 @@ namespace MyTest2.Utilities
     {
         private static Communicator instance;
         private string serverIP = "127.0.0.1";
-      //  private string serverIP = "192.168.1.3";
+        //private string serverIP = "192.168.1.3";
         private string clientIP = "127.0.0.1";
-      //  private string clientIP = "192.168.1.2";
+        //private string clientIP = "192.168.1.2";
 
         private Communicator() { }
 

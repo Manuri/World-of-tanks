@@ -16,6 +16,9 @@ namespace MyTest2.AI
         public ClosestTreasure _closestLifePack;
         public ClosestTreasure _bestToFollow;
         private int deadCount = 0;
+        private static Player myPlayer;
+        private static Player[] all;
+        private static Player[] enemies;
 
         public Statistics()
         {
@@ -26,6 +29,20 @@ namespace MyTest2.AI
 
             _closestCoin = new ClosestTreasure();
             _closestLifePack = new ClosestTreasure();
+
+            myPlayer = Map.getMap.AllTanks[Map.getMap.MyIndex];
+            all = Map.getMap.AllTanks;
+            enemies = new Player[Map.getMap.NoOfPlayers - 1];
+
+            int j = 0;
+            for (int i = 0; i < Map.getMap.NoOfPlayers; i++)
+            {
+                if (all[i].Coordinate != all[Map.getMap.MyIndex].Coordinate)
+                {
+                    enemies[j] = all[i];
+                    j++;
+                }
+            }
         }
 
         public static Statistics getStatistics
@@ -61,25 +78,16 @@ namespace MyTest2.AI
         }
 
         public void checkPlayers()//use inside a thread to update the bool variables in this class
-        {
-                Player myPlayer = Map.getMap.AllTanks[Map.getMap.MyIndex];
-                Player[] all = Map.getMap.AllTanks;
-                Player[] enemies = new Player[Map.getMap.NoOfPlayers - 1];
-                int j = 0;
-                for (int i = 0; i < Map.getMap.NoOfPlayers; i++)
-                {
-                    if (all[i].Coordinate != all[Map.getMap.MyIndex].Coordinate)
-                    {
-                        enemies[j] = all[i];
-                        j++;
-                    }
-                }
+        {           
 
-                while (true)
+              //  while (true)
+              //  {
+                if (deadCount != enemies.Length)
                 {
                     // foreach (Player p in Map.getMap.AllTanks)
-                   // foreach (Player p in enemies)
-                    for (int i = 0; i < enemies.Length;i++ )
+                    // foreach (Player p in enemies)
+                    deadCount = 0;
+                    for (int i = 0; i < enemies.Length; i++)
                     {
                         if (enemies[i].IsAlive)
                         {
@@ -117,18 +125,19 @@ namespace MyTest2.AI
                         else
                         {
                             deadCount++;
+                            Console.WriteLine("deadcount: "+deadCount);
                             if (deadCount == enemies.Length)
                             {
                                 _playerUp = false;
                                 _playerDown = false;
                                 _playerLeft = false;
                                 _playerRight = false;
-                                break;
+                                // break;
                             }
                         }
 
                     }
-                    deadCount = 0;
+                    // }
                 }
         }
         
@@ -203,7 +212,7 @@ namespace MyTest2.AI
                 if (Pathfinder.getPathFinder.Squares[x1, y1].DistanceSteps < coinMin)
                 {
                     coinMin = Pathfinder.getPathFinder.Squares[x1, y1].DistanceSteps;
-                    Console.WriteLine(coinMin);
+//                    Console.WriteLine(coinMin);
                 }
             }
             _closestCoin.Coordinate = Pathfinder.getPathFinder.Squares[x1, y1].Coordinate;
@@ -218,7 +227,7 @@ namespace MyTest2.AI
                 if (Pathfinder.getPathFinder.Squares[x2, y2].DistanceSteps < lifePackMin)
                 {
                     lifePackMin = Pathfinder.getPathFinder.Squares[x2, y2].DistanceSteps;
-                    Console.WriteLine(lifePackMin);
+//                    Console.WriteLine(lifePackMin);
                 }
             }
             _closestLifePack.Coordinate = Pathfinder.getPathFinder.Squares[x2, y2].Coordinate;
@@ -232,8 +241,8 @@ namespace MyTest2.AI
             {
                 _bestToFollow = _closestCoin;
 
-                Console.WriteLine("coincost: " + _closestCoin.Cost);
-                Console.WriteLine("lifepack cost: "+ _closestLifePack.Cost);
+ //               Console.WriteLine("coincost: " + _closestCoin.Cost);
+ //               Console.WriteLine("lifepack cost: "+ _closestLifePack.Cost);
 
                 Console.WriteLine("bestToFollow is the coin at: " + _closestCoin.Coordinate.X + ", " + _closestCoin.Coordinate.Y);               
             }

@@ -1,3 +1,5 @@
-going to put decide move in a thread. without ontimedevent.
+change g to check players inside ontimedevent.
 
-this way is not good....
+this works better than g with shooting. but needs to be tuned to a good timer delay. because of thIS mad serer PITFALL happens. :(
+
+to solve that I put the bool canDoNextMove in game manager. changes are done inside starter(), shoot()

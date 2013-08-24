@@ -13,6 +13,7 @@ namespace MyTest2
     class GameManager 
     {
         private static GameManager instance;
+        public bool canDoNextMove = false;
 
         public static GameManager getGameManager
         {
@@ -61,6 +62,7 @@ namespace MyTest2
 
                     case 'G':
                         updateMap(token);
+                        canDoNextMove = true;
                         break;
 
                     case 'C':
@@ -145,13 +147,13 @@ namespace MyTest2
 
         private void startMyPlayer()
         {
-            Thread playerStatUpdater = new Thread(Statistics.getStatistics.checkPlayers);
-            playerStatUpdater.Start();
+           // Thread playerStatUpdater = new Thread(Statistics.getStatistics.checkPlayers);
+           // playerStatUpdater.Start();
 
            /* Thread distanceUpdater = new Thread(Pathfinder.getPathFinder.Pathfind);
             distanceUpdater.Start();*/
 
-            /*Thread moveDecider = new Thread(Statistics.getStatistics.decideTheMove);
+         /*   Thread moveDecider = new Thread(Statistics.getStatistics.decideTheMove);
             moveDecider.Start();*/
 
             Thread aiOperator = new Thread(AIBrain.getAI.starter);

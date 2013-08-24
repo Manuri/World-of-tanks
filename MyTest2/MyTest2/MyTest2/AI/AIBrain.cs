@@ -17,7 +17,7 @@ namespace MyTest2.AI
         String[] messages;
 
 
-        public AIBrain()
+      /*  public AIBrain()
         {
             messages = new String[5];
 
@@ -27,7 +27,7 @@ namespace MyTest2.AI
             messages[3] = "LEFT#";
             messages[4] = "SHOOT#";
 
-        }
+        }*/
 
         public static AIBrain getAI
         {
@@ -45,7 +45,7 @@ namespace MyTest2.AI
 
         public void starter()
         {
-              while (true)
+            /*  while (true)
               {
                  // if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
                  // {
@@ -54,33 +54,42 @@ namespace MyTest2.AI
                  // }
                  // else
                  // {
-                  Statistics.getStatistics.decideTheMove();
+                      Move();
                       //Console.WriteLine("entered starter");
                  // }
-                  Thread.Sleep(800);
-              }
-          /*  System.Timers.Timer aTimer = new System.Timers.Timer(1400);
+                  Thread.Sleep(1000);
+              }*/
+            System.Timers.Timer aTimer = new System.Timers.Timer(1);
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Enabled = true;
-            GC.KeepAlive(aTimer);*/
+            GC.KeepAlive(aTimer);
         }
 
-      /*  private void OnTimedEvent(object source, ElapsedEventArgs e)
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-           // if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
-           // {
-            //    shoot();
-           // }
-           // else
-           // {
-                Statistics.getStatistics.decideTheMove();
-           // }
-        }*/
+            
+            
+              //  Statistics.getStatistics.checkPlayers();
+              //  if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
+              //  {
+              //      shoot();
+              //  }
+              //  else 
+            if (GameManager.getGameManager.canDoNextMove)
+                {
+                    Console.WriteLine("can move? " + GameManager.getGameManager.canDoNextMove);
+                    Statistics.getStatistics.decideTheMove();
+                    GameManager.getGameManager.canDoNextMove = false;
+                }
+
+
+        }
+
         private void shoot()
         {
             Player me = Map.getMap.AllTanks[Map.getMap.MyIndex];
 
-            Console.WriteLine("entered shoot");
+           // Console.WriteLine("entered shoot");
             if (Statistics.getStatistics.PlayerUp)
             {
               /*  switch (me.Direction)
@@ -98,10 +107,12 @@ namespace MyTest2.AI
                 if (me.Direction == 0)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
                 }
-                else
+                else if (GameManager.getGameManager.canDoNextMove)
                 {
                     GameManager.getGameManager.sendMessage("UP#");
+                    GameManager.getGameManager.canDoNextMove = false;
                     Console.WriteLine("up");
                 }
             }
@@ -121,10 +132,12 @@ namespace MyTest2.AI
                 if (me.Direction == 1)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
                 }
-                else
+                else if (GameManager.getGameManager.canDoNextMove)
                 {
                     GameManager.getGameManager.sendMessage("RIGHT#");
+                    GameManager.getGameManager.canDoNextMove = false;
                     Console.WriteLine("right");
                 }
             }
@@ -144,10 +157,12 @@ namespace MyTest2.AI
                 if (me.Direction == 2)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
                 }
-                else
+                else if (GameManager.getGameManager.canDoNextMove)
                 {
                     GameManager.getGameManager.sendMessage("DOWN#");
+                    GameManager.getGameManager.canDoNextMove = false;
                     Console.WriteLine("down");
                 }
             }
@@ -167,10 +182,12 @@ namespace MyTest2.AI
                 if (me.Direction == 3)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
                 }
-                else
+                else if (GameManager.getGameManager.canDoNextMove)
                 {
                     GameManager.getGameManager.sendMessage("LEFT#");
+                    GameManager.getGameManager.canDoNextMove = false;
                     Console.WriteLine("left");
                 }
             }

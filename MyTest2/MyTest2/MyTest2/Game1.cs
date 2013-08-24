@@ -74,7 +74,7 @@ namespace MyTest2
 
             device = graphics.GraphicsDevice;
 
-            backgroundTexture = Content.Load<Texture2D>("background1");
+            backgroundTexture = Content.Load<Texture2D>("background3");
 
             tankTextures = new Texture2D[numberOfPlayers];
 
@@ -87,7 +87,7 @@ namespace MyTest2
 
             obstacleTextures[0] = Content.Load<Texture2D>("brick5");
             obstacleTextures[1] = Content.Load<Texture2D>("stone5");
-            obstacleTextures[2] = Content.Load<Texture2D>("water7");
+            obstacleTextures[2] = Content.Load<Texture2D>("water10");
 
             coin = Content.Load<Texture2D>("coin8");
             lifePack = Content.Load<Texture2D>("lifePack2");
