@@ -1,0 +1,2 @@
+there is a little delay in healthpack dissapearing.
+coinpiles seem okay.
