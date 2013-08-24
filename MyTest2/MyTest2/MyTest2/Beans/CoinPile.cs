@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace MyTest2.Beans
 {
-    class CoinPile : Treasure
+    class CoinPile : Treasure 
     //class CoinPile 
     {
         /*private Point _coordinate;

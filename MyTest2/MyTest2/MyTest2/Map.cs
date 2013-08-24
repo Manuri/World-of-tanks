@@ -5,6 +5,7 @@ using System.Text;
 using MyTest2.Beans;
 using MyTest2.AI;
 using Microsoft.Xna.Framework;
+using System.Collections.Concurrent;
 
 namespace MyTest2
 {
@@ -13,8 +14,12 @@ namespace MyTest2
         private static Map instance;
 
         private Player[] _allTanks;
-        private Dictionary<Point,CoinPile> _coinList;
-        private Dictionary<Point, Treasure> _lifePackList;
+        //private Dictionary<Point,CoinPile> _coinList;
+        private ConcurrentDictionary <Point, CoinPile> _coinList;
+
+        //private Dictionary<Point, Treasure> _lifePackList;
+        private ConcurrentDictionary<Point, Treasure> _lifePackList;
+
         private CompleteSquare[,] _boardBlocks;
         private int _myIndex;
         private int _noOfPlayers;
@@ -23,8 +28,11 @@ namespace MyTest2
         public Map()
         {
             _allTanks = new Player[5];
-            _coinList = new Dictionary<Point,CoinPile>();
-            _lifePackList = new Dictionary<Point, Treasure>();
+           // _coinList = new Dictionary<Point,CoinPile>();
+            _coinList = new ConcurrentDictionary<Point, CoinPile>();
+
+           // _lifePackList = new Dictionary<Point, Treasure>();
+            _lifePackList = new ConcurrentDictionary<Point, Treasure>();
             _gridLength = 10;
             _boardBlocks = new CompleteSquare[GridLength,GridLength];
             _noOfPlayers = 0;
@@ -73,13 +81,23 @@ namespace MyTest2
         }
 
 
-        public Dictionary<Point,CoinPile> CoinList
+        /*public Dictionary<Point,CoinPile> CoinList
+        {
+            get { return _coinList; }
+        }*/
+
+        public ConcurrentDictionary<Point, CoinPile> CoinList
         {
             get { return _coinList; }
         }
 
 
-        public Dictionary<Point, Treasure> LifePackList
+       /* public Dictionary<Point, Treasure> LifePackList
+        {
+            get { return _lifePackList; }
+        }*/
+
+        public ConcurrentDictionary<Point, Treasure> LifePackList 
         {
             get { return _lifePackList; }
         }

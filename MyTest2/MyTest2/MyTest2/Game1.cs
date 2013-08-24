@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Collections.Concurrent;
 
 using MyTest2.AI;
 using MyTest2.Beans;
@@ -37,9 +38,11 @@ namespace MyTest2
         CompleteSquare[,] bd;
         Player[] tanks = new Player[5];
 
-        private Dictionary<Point, CoinPile> coinList = new Dictionary<Point, CoinPile>();
+        //private Dictionary<Point, CoinPile> coinList = new Dictionary<Point, CoinPile>();
+        private ConcurrentDictionary<Point, CoinPile> coinList = new ConcurrentDictionary<Point, CoinPile>();
 
-        private Dictionary<Point, Treasure> lifePackList = new Dictionary<Point, Treasure>();
+        //private Dictionary<Point, Treasure> lifePackList = new Dictionary<Point, Treasure>();
+        private ConcurrentDictionary<Point, Treasure> lifePackList = new ConcurrentDictionary<Point, Treasure>();
 
         public Game1()
         {

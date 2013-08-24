@@ -10,7 +10,7 @@ using MyTest2.Utilities;
 
 namespace MyTest2
 {
-    class GameManager
+    class GameManager 
     {
         private static GameManager instance;
 
@@ -251,8 +251,10 @@ namespace MyTest2
         private void removeCoinsIfAPlayerSteppedOn(Player tank)
         {
             if (Map.getMap.CoinList.ContainsKey(tank.Coordinate))
-            {
-                Map.getMap.CoinList.Remove(tank.Coordinate);
+            {              
+                //Map.getMap.CoinList.Remove(tank.Coordinate);
+                CoinPile value;
+                Map.getMap.CoinList.TryRemove(tank.Coordinate,out value);
             }
         }
 
@@ -260,7 +262,9 @@ namespace MyTest2
         {
             if (Map.getMap.LifePackList.ContainsKey(tank.Coordinate))
             {
-                Map.getMap.LifePackList.Remove(tank.Coordinate);
+                //Map.getMap.LifePackList.Remove(tank.Coordinate);
+                Treasure value;
+                Map.getMap.LifePackList.TryRemove(tank.Coordinate,out value);
             }
 
 
@@ -305,7 +309,7 @@ namespace MyTest2
             lifeTime = int.Parse(token[2]);
             value = int.Parse(token[3]);
 
-            Map.getMap.CoinList.Add(new Point(x,y),new CoinPile(x,y,value,lifeTime));
+            Map.getMap.CoinList.AddOrUpdate(new Point(x, y), new CoinPile(x, y, value, lifeTime), (k, v) => new CoinPile(x, y, value, lifeTime));
             Console.WriteLine("Coinpile added. Value: "+value);
         }
 
@@ -326,14 +330,18 @@ namespace MyTest2
             lifeTime = int.Parse(token[2]);
 
             //Map.getMap.LifePackList.Add(new Treasure(x,y,lifeTime));
-            Map.getMap.LifePackList.Add(new Point(x,y), new Treasure(x, y, lifeTime));
+           // Map.getMap.LifePackList.Add(new Point(x,y), new Treasure(x, y, lifeTime));
+            Map.getMap.LifePackList.AddOrUpdate(new Point(x, y), new Treasure(x, y, lifeTime), (k, v) => new Treasure(x, y, lifeTime));
+
             Console.WriteLine("LifePack added. It's lifetime: "+lifeTime);
         }
 
         public void removeCoinsFromMap(CoinPile coin)
         {
             //this needs to be called when a timer expires
-            Map.getMap.CoinList.Remove(coin.Coordinate);
+            CoinPile value; 
+            Map.getMap.CoinList.TryRemove(coin.Coordinate, out value);
+
             Console.WriteLine("coinpile removed.value: "+coin.Value);
 
         }
@@ -341,8 +349,11 @@ namespace MyTest2
         public void removeLifepacksFromMap(Treasure lifePack)
         {
             //this needs to be called when a timer expires
-            //Map.getMap.LifePackList.Remove(lifePack);
-            Map.getMap.LifePackList.Remove(lifePack.Coordinate);
+
+            //Map.getMap.LifePackList.Remove(lifePack.Coordinate);
+            Treasure value; 
+            Map.getMap.LifePackList.TryRemove(lifePack.Coordinate,out value);
+
             Console.WriteLine("lifepack removed.lifetime: " + lifePack.LifeTime);
         }
     }
