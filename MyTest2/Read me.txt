@@ -1,10 +1,3 @@
-/*put pathfinding , setting real costs, finding betstofollow to a seperate thread.
-removed while true from pathfind()*/
+going to put decide move in a thread. without ontimedevent.
 
-put deciding move() also in timers method. removed thread movedecider.
-
-I hadn't cleared the bestToFollow's path. I did it in this version.
-
-called clearLogic after highlighitng path.
-
-now working ! no exceptions arised so far. but doesnt work well with shooting.
+this way is not good....

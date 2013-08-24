@@ -151,7 +151,7 @@ namespace MyTest2
            /* Thread distanceUpdater = new Thread(Pathfinder.getPathFinder.Pathfind);
             distanceUpdater.Start();*/
 
-         /*   Thread moveDecider = new Thread(Statistics.getStatistics.decideTheMove);
+            /*Thread moveDecider = new Thread(Statistics.getStatistics.decideTheMove);
             moveDecider.Start();*/
 
             Thread aiOperator = new Thread(AIBrain.getAI.starter);
