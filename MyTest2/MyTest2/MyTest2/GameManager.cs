@@ -55,27 +55,27 @@ namespace MyTest2
                 letter = Convert.ToChar(token[0]);
                 switch (letter)
                 {
-                    case 'I':
+                    case 'I'://initializer
                         createMyPlayerInMap(token);
                         setUpMap(token);
                         break;
 
-                    case 'S':
+                    case 'S'://ositions of other players
                         //createMyPlayerInMap(token);
                         setUpPlayers(token);
                         startMyPlayer();
                         break;
 
-                    case 'G':
+                    case 'G'://globalupdate
                         updateMap(token);
                         globalUpdateCounter++;
                         break;
 
-                    case 'C':
+                    case 'C'://coin piles
                         addCoinsToMap(token);
                         break;
 
-                    case 'L':
+                    case 'L'://life packs
                         addLifePacksToMap(token);
                         break;
 

@@ -83,6 +83,11 @@ namespace MyTest2.AI
 
               //  while (true)
               //  {
+            _playerUp = false;
+            _playerDown = false;
+            _playerLeft = false;
+            _playerRight = false;
+
                 if (deadCount != enemies.Length)
                 {
                     // foreach (Player p in Map.getMap.AllTanks)
@@ -94,33 +99,38 @@ namespace MyTest2.AI
                         {
                             if (enemies[i].Coordinate.X == myPlayer.Coordinate.X)
                             {
-                                if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y && !_playerDown)
+                                //if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y && !_playerDown)
+                                if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y)
                                 {
                                     // _playerUp = true;
                                     _playerDown = true;
                                 }
-                                else if (!_playerUp)// _playerDown = true;
+                                //else if (!_playerUp)// _playerDown = true;
+                                else
                                     _playerUp = true;
 
                             }
-                            else
+                           /* else 
                             {
                                 _playerUp = false;
                                 _playerDown = false;
-                            }
+                            }*/
                             if (enemies[i].Coordinate.Y == myPlayer.Coordinate.Y)
                             {
-                                if (enemies[i].Coordinate.X > myPlayer.Coordinate.X && !_playerRight)
+                                //if (enemies[i].Coordinate.X > myPlayer.Coordinate.X && !_playerRight)
+                                if (enemies[i].Coordinate.X > myPlayer.Coordinate.X )
                                 {
                                     _playerRight = true;
                                 }
-                                else if (!_playerLeft) _playerLeft = true;
+                                //else if (!_playerLeft)
+                                else
+                                     _playerLeft = true;
                             }
-                            else
+                          /*  else
                             {
                                 _playerLeft = false;
                                 _playerRight = false;
-                            }
+                            }*/
 
                         }
                         else

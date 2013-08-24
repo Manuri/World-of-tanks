@@ -14,9 +14,9 @@ namespace MyTest2.Utilities
     {
         private static Communicator instance;
         private string serverIP = "127.0.0.1";
-        //private string serverIP = "192.168.1.3";
+       // private string serverIP = "192.168.137.253";
         private string clientIP = "127.0.0.1";
-        //private string clientIP = "192.168.1.2";
+      //  private string clientIP = "192.168.137.1";
 
         private Communicator() { }
 
@@ -54,32 +54,26 @@ namespace MyTest2.Utilities
 
             try
             {
-                //Console.OpenStandardOutput();
                 TcpClient tcpClient = new TcpClient();
 
-                //Console.WriteLine("Connecting....");
 
                 tcpClient.Connect(serverIP, 6000);
 
-                //Console.WriteLine("Connected");
-                //Console.WriteLine("Sending request : " + request);
 
                 NetworkStream outStream = tcpClient.GetStream();
 
                 BinaryWriter writer = new BinaryWriter(outStream);
                 ASCIIEncoding asci = new ASCIIEncoding();
                 Byte[] ba = asci.GetBytes(request);
-                //outStream.Write(ba, 0, ba.Length);
                 writer.Write(ba);
 
-                //Console.WriteLine("Transmitting.....");
 
                 tcpClient.Close();
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error Occured while sending request  :: " + e);
+                Console.WriteLine("Error :" + e);
 
             }
         }
@@ -93,17 +87,15 @@ namespace MyTest2.Utilities
             IPAddress ip = IPAddress.Parse(clientIP);
             
             
-            //Console.WriteLine("Waiting for a connection.....");
             while (true)
             {
                 TcpListener listener = new TcpListener(ip, 7000);
 
                 listener.Start();
-                //Socket s = listener.AcceptSocket();
+
                 Socket s = listener.AcceptSocket();
                 if (s.Connected)
                 {
-                    //Console.WriteLine("\nConnection accepted from " + s.RemoteEndPoint);
                     NetworkStream inputStream = new NetworkStream(s);
                     StreamReader reader = new StreamReader(inputStream);
 
@@ -116,7 +108,6 @@ namespace MyTest2.Utilities
 
                         ThreadPool.QueueUserWorkItem(new WaitCallback(GameManager.getGameManager.decodeMessage), (Object)line);
 
-                        //Console.WriteLine("Recieved...");
                         reader.Close();
                     }
                     catch (Exception e)
