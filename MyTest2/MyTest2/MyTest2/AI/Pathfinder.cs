@@ -333,7 +333,7 @@ namespace MyTest2.AI
                 int lowest = 10000;
 
                 //my test
-                /*foreach (Point movePoint in ValidMoves(pointX, pointY))
+                foreach (Point movePoint in ValidMoves(pointX, pointY))
                 {
                     int count = _squares[movePoint.X, movePoint.Y].DistanceSteps;
                     //Console.WriteLine("count before if "+count);
@@ -344,9 +344,9 @@ namespace MyTest2.AI
                         lowestPoint.X = movePoint.X;
                         lowestPoint.Y = movePoint.Y;
                     }
-                }*/
+                }
 
-                for (int i = 0; i < 4; i++)
+              /*  for (int i = 0; i < 4; i++)
                 {
                     int newX = points[pointX,pointY].X + _movements[i].X;
                     int newY = points[pointX, pointY].Y + _movements[i].Y;
@@ -363,7 +363,7 @@ namespace MyTest2.AI
                             lowestPoint.Y = points[newX, newY].Y;
                         }
                     }
-                }
+                }*/
                 //my test over
                     if (lowest != 10000)
                     {

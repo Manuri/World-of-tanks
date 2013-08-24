@@ -178,13 +178,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="water8.jpg">
-      <Name>water8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="water9.jpg">
-      <Name>water9</Name>
+    <Compile Include="background4.jpg">
+      <Name>background4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -197,8 +192,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="background3.jpg">
-      <Name>background3</Name>
+    <Compile Include="background5.jpg">
+      <Name>background5</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

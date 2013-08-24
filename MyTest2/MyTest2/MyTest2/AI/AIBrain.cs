@@ -13,8 +13,9 @@ namespace MyTest2.AI
     class AIBrain
     {
         private static AIBrain instance;
+        private int previousGlobalUpdate=0;
 
-        String[] messages;
+      //  String[] messages;
 
 
       /*  public AIBrain()
@@ -75,11 +76,12 @@ namespace MyTest2.AI
               //      shoot();
               //  }
               //  else 
-            if (GameManager.getGameManager.canDoNextMove)
+            if (GameManager.getGameManager.globalUpdateCounter>previousGlobalUpdate)
                 {
-                    Console.WriteLine("can move? " + GameManager.getGameManager.canDoNextMove);
+                    Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
+                    Console.WriteLine("globalUpdateCounter "+GameManager.getGameManager.globalUpdateCounter);
                     Statistics.getStatistics.decideTheMove();
-                    GameManager.getGameManager.canDoNextMove = false;
+                    previousGlobalUpdate++;
                 }
 
 
@@ -109,10 +111,10 @@ namespace MyTest2.AI
                     GameManager.getGameManager.sendMessage("SHOOT#");
                     Console.WriteLine("shooting");
                 }
-                else if (GameManager.getGameManager.canDoNextMove)
+                else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
                 {
                     GameManager.getGameManager.sendMessage("UP#");
-                    GameManager.getGameManager.canDoNextMove = false;
+                    previousGlobalUpdate++;
                     Console.WriteLine("up");
                 }
             }
@@ -134,10 +136,10 @@ namespace MyTest2.AI
                     GameManager.getGameManager.sendMessage("SHOOT#");
                     Console.WriteLine("shooting");
                 }
-                else if (GameManager.getGameManager.canDoNextMove)
+                else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
                 {
                     GameManager.getGameManager.sendMessage("RIGHT#");
-                    GameManager.getGameManager.canDoNextMove = false;
+                    previousGlobalUpdate++;
                     Console.WriteLine("right");
                 }
             }
@@ -159,10 +161,10 @@ namespace MyTest2.AI
                     GameManager.getGameManager.sendMessage("SHOOT#");
                     Console.WriteLine("shooting");
                 }
-                else if (GameManager.getGameManager.canDoNextMove)
+                else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
                 {
                     GameManager.getGameManager.sendMessage("DOWN#");
-                    GameManager.getGameManager.canDoNextMove = false;
+                    previousGlobalUpdate++;
                     Console.WriteLine("down");
                 }
             }
@@ -184,10 +186,10 @@ namespace MyTest2.AI
                     GameManager.getGameManager.sendMessage("SHOOT#");
                     Console.WriteLine("shooting");
                 }
-                else if (GameManager.getGameManager.canDoNextMove)
+                else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
                 {
                     GameManager.getGameManager.sendMessage("LEFT#");
-                    GameManager.getGameManager.canDoNextMove = false;
+                    previousGlobalUpdate++;
                     Console.WriteLine("left");
                 }
             }

@@ -74,7 +74,7 @@ namespace MyTest2
 
             device = graphics.GraphicsDevice;
 
-            backgroundTexture = Content.Load<Texture2D>("background3");
+            backgroundTexture = Content.Load<Texture2D>("background1");
 
             tankTextures = new Texture2D[numberOfPlayers];
 

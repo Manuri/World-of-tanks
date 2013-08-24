@@ -13,7 +13,8 @@ namespace MyTest2
     class GameManager 
     {
         private static GameManager instance;
-        public bool canDoNextMove = false;
+        //public bool canDoNextMove = false;
+        public int globalUpdateCounter = 0;
 
         public static GameManager getGameManager
         {
@@ -62,7 +63,7 @@ namespace MyTest2
 
                     case 'G':
                         updateMap(token);
-                        canDoNextMove = true;
+                        globalUpdateCounter++;
                         break;
 
                     case 'C':
