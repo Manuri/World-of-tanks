@@ -94,22 +94,6 @@ namespace MyTest2.AI
                         {
                             if (enemies[i].Coordinate.X == myPlayer.Coordinate.X)
                             {
-                                int count = enemies[i].Coordinate.Y - myPlayer.Coordinate.Y;
-                                bool check = false;
-                                if (count < 0) count = count * (-1);
-
-                                while (count != 0)
-                                {
-                                    if (Map.getMap.BoardBlocks[enemies[i].Coordinate.X, count].ContentCode == SquareContent.Stone)
-                                    {
-                                        check = false;
-                                    }
-                                    else
-                                    {
-                                        check = true;
-                                    }
-                                    count++;
-                                }
                                 if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y && !_playerDown)
                                 {
                                     // _playerUp = true;
@@ -272,8 +256,8 @@ namespace MyTest2.AI
 
         public void decideTheMove()
         {
-            while (true)
-            {
+          //  while (true)
+          //  {
                 Pathfinder.getPathFinder.Pathfind();
                 findLeastDistanceTreasures();
 
@@ -298,9 +282,9 @@ namespace MyTest2.AI
 
                     Pathfinder.getPathFinder.ClearLogic();
 
-                    //AIBrain.getAI.Move();
+                   // AIBrain.getAI.Move();
                 }
-            }
+           // }
         }
         
         

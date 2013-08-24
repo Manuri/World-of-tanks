@@ -1,2 +1,1 @@
-going to change k to use another thread to decide the move.
-AIBrain only does moving
+going to change k. take the AIrain.move() out of decideTheMove() in statistics and put it in AIBrain class

@@ -72,8 +72,8 @@ namespace MyTest2.AI
                 {
                     Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
                     Console.WriteLine("globalUpdateCounter " + GameManager.getGameManager.globalUpdateCounter);
-                   // Statistics.getStatistics.decideTheMove();
-                    AIBrain.getAI.Move();
+                    Statistics.getStatistics.decideTheMove();
+                    Move();
                     previousGlobalUpdate++;
                 }
             }
