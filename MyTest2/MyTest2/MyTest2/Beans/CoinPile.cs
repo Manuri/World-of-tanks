@@ -25,7 +25,7 @@ namespace MyTest2.Beans
             Value = theValue;
             LifeTime = theLifeTime;
             IsPresent = true;
-            AppearedTime = System.DateTime.Now.ToString(); 
+            AppearedTime = System.DateTime.Now; 
             aTimer = new System.Timers.Timer(theLifeTime); 
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Enabled = true;
@@ -62,9 +62,10 @@ namespace MyTest2.Beans
         {
             this.IsPresent = false;
             GameManager.getGameManager.removeCoinsFromMap(this);
-            VanishingTime = DateTime.Now.ToString();
-            Console.WriteLine("from " + AppearedTime + " to " + VanishingTime);
-            Console.WriteLine("lifetime " + LifeTime);
+            VanishingTime = DateTime.Now;
+            //Console.WriteLine("from " + AppearedTime + " to " + VanishingTime);
+            //Console.WriteLine((AppearedTime - VanishingTime).ToString());
+            //Console.WriteLine("lifetime " + LifeTime);
         }
 
 

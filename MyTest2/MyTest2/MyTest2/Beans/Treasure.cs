@@ -12,8 +12,8 @@ namespace MyTest2.Beans
         private Point _coordinate;
         private bool _isPresent;
         private int _lifeTime;
-        private String _appearedTime;
-        private String _vanishingTime;
+        private DateTime _appearedTime;
+        private DateTime _vanishingTime;
         protected Timer aTimer;
 
         public Treasure()
@@ -25,7 +25,7 @@ namespace MyTest2.Beans
             Coordinate = new Point(x, y);
             LifeTime = lifeTime;
             IsPresent = true;
-            AppearedTime = DateTime.Now.ToString();
+            AppearedTime = DateTime.Now;
             aTimer = new System.Timers.Timer(lifeTime);
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Enabled = true;
@@ -38,13 +38,13 @@ namespace MyTest2.Beans
             set { _coordinate = value; }
         }
 
-        public String AppearedTime
+        public DateTime AppearedTime
         {
             get { return _appearedTime; }
             set { _appearedTime = value; }
         }
 
-        public String VanishingTime
+        public DateTime VanishingTime
         {
             get { return _vanishingTime; }
             set { _vanishingTime = value; }
@@ -66,9 +66,9 @@ namespace MyTest2.Beans
         {
             this.IsPresent = false; 
             GameManager.getGameManager.removeLifepacksFromMap(this);
-            Console.WriteLine("lifetime " + LifeTime);
-            VanishingTime = DateTime.Now.ToString();
-            Console.WriteLine("from "+AppearedTime+" to "+VanishingTime);
+            //Console.WriteLine("lifetime " + LifeTime);
+            VanishingTime = DateTime.Now;
+            //Console.WriteLine((VanishingTime-AppearedTime).ToString());
 
         }
     }

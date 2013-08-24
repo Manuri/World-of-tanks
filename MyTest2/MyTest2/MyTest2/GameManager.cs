@@ -14,7 +14,6 @@ namespace MyTest2
     {
         private static GameManager instance;
 
-
         public static GameManager getGameManager
         {
             get
@@ -41,7 +40,6 @@ namespace MyTest2
         public void decodeMessage(Object obj)
         {
             String line = (String)obj;
-            Console.WriteLine("inside decodeMessage()");
             Console.WriteLine(line);
             String[] token = line.Split(':');
             char letter;
@@ -51,40 +49,36 @@ namespace MyTest2
                 switch (letter)
                 {
                     case 'I':
-                        Console.WriteLine(line);
                         createMyPlayerInMap(token);
                         setUpMap(token);
                         break;
 
                     case 'S':
-                        Console.WriteLine(line);
                         //createMyPlayerInMap(token);
                         setUpPlayers(token);
                         startMyPlayer();
                         break;
 
                     case 'G':
-                        Console.WriteLine(line);
                         updateMap(token);
                         break;
 
                     case 'C':
-                        Console.WriteLine(line);
                         addCoinsToMap(token);
                         break;
 
                     case 'L':
-                        Console.WriteLine(line);
                         addLifePacksToMap(token);
                         break;
 
-                    default:
+                    default: 
                         break;
                 }
             }
             else
             {
                 //server has given an error message
+                //errorHandler(line);
             }
 
         }
@@ -106,13 +100,13 @@ namespace MyTest2
 
         public void createMyPlayerInMap(String[] token)
         {
-            int index = Convert.ToInt32(token[1].ToCharArray()[1]);
+            int index = Convert.ToInt32(token[1].ToCharArray()[1])-48;
           /*  int x = Convert.ToInt32(token[2].ToCharArray()[1]);
             int y = Convert.ToInt32(token[2].ToCharArray()[3]);
             int direction = Convert.ToInt32(token[3].ToCharArray()[0]);*/
 
             Map.getMap.MyIndex = index;
-            Console.WriteLine("My tank's indexNo: " + Map.getMap.MyIndex);
+            //Console.WriteLine("My tank's indexNo: " + Map.getMap.MyIndex);
         }
         
         private void setUpPlayers(String[] token)
@@ -145,12 +139,15 @@ namespace MyTest2
                 int direction = int.Parse(broken[2]);
 
                 tanks[j] = new Player(index, x, y, direction);
-                Console.WriteLine("Player added. IndexNo: " + tanks[j].PlayerIndexNo + " at " + tanks[j].Coordinate.X + ", " + tanks[j].Coordinate.Y);
+                //Console.WriteLine("Player added. IndexNo: " + tanks[j].PlayerIndexNo + " at " + tanks[j].Coordinate.X + ", " + tanks[j].Coordinate.Y);
             }
         }
 
         private void startMyPlayer()
         {
+            Thread commander = new Thread(AIBrain.getAI.nextMessage);
+            commander.Start();
+
             Thread aiOperator = new Thread(AIBrain.getAI.starter);
             aiOperator.Start();
         }
@@ -166,7 +163,7 @@ namespace MyTest2
 
                 Map.getMap.BoardBlocks[x, y] = new CompleteSquare(x, y, content);
                 Map.getMap.BoardBlocks[x, y].ObstaclePresent = true;
-                Console.WriteLine(Map.getMap.BoardBlocks[x, y].ContentCode + " added at (" + Map.getMap.BoardBlocks[x, y].Coordinate.X+ " ," + Map.getMap.BoardBlocks[x, y].Coordinate.Y+")");
+                //Console.WriteLine(Map.getMap.BoardBlocks[x, y].ContentCode + " added at (" + Map.getMap.BoardBlocks[x, y].Coordinate.X+ " ," + Map.getMap.BoardBlocks[x, y].Coordinate.Y+")");
             }
         }
 
@@ -181,7 +178,7 @@ namespace MyTest2
                     if (Map.getMap.BoardBlocks[i, j] == null)
                     {
                         Map.getMap.BoardBlocks[i, j] = new CompleteSquare(i, j, SquareContent.Empty);
-                        Console.WriteLine(Map.getMap.BoardBlocks[i, j].ContentCode + " added at (" + Map.getMap.BoardBlocks[i, j].Coordinate.X + " ," + Map.getMap.BoardBlocks[i, j].Coordinate.Y + ")");
+                        //Console.WriteLine(Map.getMap.BoardBlocks[i, j].ContentCode + " added at (" + Map.getMap.BoardBlocks[i, j].Coordinate.X + " ," + Map.getMap.BoardBlocks[i, j].Coordinate.Y + ")");
                     }
                 }
             }
@@ -310,7 +307,7 @@ namespace MyTest2
             value = int.Parse(token[3]);
 
             Map.getMap.CoinList.AddOrUpdate(new Point(x, y), new CoinPile(x, y, value, lifeTime), (k, v) => new CoinPile(x, y, value, lifeTime));
-            Console.WriteLine("Coinpile added. Value: "+value);
+            //Console.WriteLine("Coinpile added. Value: "+value);
         }
 
         public void addLifePacksToMap(String[] token)
@@ -333,7 +330,7 @@ namespace MyTest2
            // Map.getMap.LifePackList.Add(new Point(x,y), new Treasure(x, y, lifeTime));
             Map.getMap.LifePackList.AddOrUpdate(new Point(x, y), new Treasure(x, y, lifeTime), (k, v) => new Treasure(x, y, lifeTime));
 
-            Console.WriteLine("LifePack added. It's lifetime: "+lifeTime);
+           // Console.WriteLine("LifePack added. It's lifetime: "+lifeTime);
         }
 
         public void removeCoinsFromMap(CoinPile coin)
@@ -342,7 +339,7 @@ namespace MyTest2
             CoinPile value; 
             Map.getMap.CoinList.TryRemove(coin.Coordinate, out value);
 
-            Console.WriteLine("coinpile removed.value: "+coin.Value);
+            //Console.WriteLine("coinpile removed.value: "+coin.Value);
 
         }
 
@@ -354,7 +351,23 @@ namespace MyTest2
             Treasure value; 
             Map.getMap.LifePackList.TryRemove(lifePack.Coordinate,out value);
 
-            Console.WriteLine("lifepack removed.lifetime: " + lifePack.LifeTime);
+            //Console.WriteLine("lifepack removed.lifetime: " + lifePack.LifeTime);
+        }
+
+        private void errorHandler(String message)
+        {
+            if (message == "TOO_QUICK" || message == "CELL_OCCUPIED")
+            {
+               // AIBrain.getAI.theTimer.Stop();
+                if (AIBrain.getAI.CommandNumber > 0)
+                {
+                   // AIBrain.getAI.theTimer.Stop();
+                    AIBrain.getAI.CommandNumber--;
+
+                }
+               // AIBrain.getAI.theTimer.Start();
+                Console.WriteLine("oops "+message);
+            }
         }
     }
 }

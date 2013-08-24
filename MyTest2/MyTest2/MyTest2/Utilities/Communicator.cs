@@ -52,15 +52,15 @@ namespace MyTest2.Utilities
 
             try
             {
-                Console.OpenStandardOutput();
+                //Console.OpenStandardOutput();
                 TcpClient tcpClient = new TcpClient();
 
-                Console.WriteLine("Connecting....");
+                //Console.WriteLine("Connecting....");
 
                 tcpClient.Connect(serverIP, 6000);
 
-                Console.WriteLine("Connected");
-                Console.WriteLine("Sending request : " + request);
+                //Console.WriteLine("Connected");
+                //Console.WriteLine("Sending request : " + request);
 
                 NetworkStream outStream = tcpClient.GetStream();
 
@@ -70,7 +70,7 @@ namespace MyTest2.Utilities
                 //outStream.Write(ba, 0, ba.Length);
                 writer.Write(ba);
 
-                Console.WriteLine("Transmitting.....");
+                //Console.WriteLine("Transmitting.....");
 
                 tcpClient.Close();
 
@@ -90,7 +90,7 @@ namespace MyTest2.Utilities
 
             IPAddress ip = IPAddress.Parse(clientIP);
 
-            Console.WriteLine("Waiting for a connection.....");
+            //Console.WriteLine("Waiting for a connection.....");
             while (true)
             {
                 TcpListener listener = new TcpListener(ip, 7000);
@@ -98,7 +98,7 @@ namespace MyTest2.Utilities
                 Socket s = listener.AcceptSocket();
                 if (s.Connected)
                 {
-                    Console.WriteLine("\nConnection accepted from " + s.RemoteEndPoint);
+                    //Console.WriteLine("\nConnection accepted from " + s.RemoteEndPoint);
                     NetworkStream inputStream = new NetworkStream(s);
                     StreamReader reader = new StreamReader(inputStream);
 
@@ -111,7 +111,7 @@ namespace MyTest2.Utilities
 
                         ThreadPool.QueueUserWorkItem(new WaitCallback(GameManager.getGameManager.decodeMessage), (Object)line);
 
-                        Console.WriteLine("Recieved...");
+                        //Console.WriteLine("Recieved...");
                         reader.Close();
                     }
                     catch (Exception e)
