@@ -6,6 +6,7 @@ using System.Timers;
 using System.Collections;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using MyTest2.Beans;
 
 namespace MyTest2.AI
 {
@@ -14,14 +15,12 @@ namespace MyTest2.AI
         private static AIBrain instance;
 
         String[] messages;
-        List<int> commandArray;
-        int _commandNumber=0;
+        LinkedList<LinkedList<Point>> pathList;
 
 
         public AIBrain()
         {
             messages = new String[5];
-            commandArray = new List<int>();
 
             messages[0] = "UP#";
             messages[1] = "DOWN#";
@@ -43,92 +42,131 @@ namespace MyTest2.AI
             }
         }
 
-        public int CommandNumber
-        {
-            get{return _commandNumber;}
-            set { _commandNumber = value; }
-        }
-
         public void starter()
-        {
-            System.Timers.Timer aTimer = new System.Timers.Timer(1000);
-            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            aTimer.Enabled = true; 
-            /*while (true)
-            {
-                GameManager.getGameManager.sendMessage(messages[commandArray.ElementAt(_commandNumber)]);
-                _commandNumber++;
-                Thread.Sleep(2000);
-            }*/
-        }
-
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            if (commandArray.Count>=CommandNumber+1)
-            {
-                if (checkAround())
-                {
-                    GameManager.getGameManager.sendMessage(messages[commandArray.ElementAt(_commandNumber)]);
-                    _commandNumber++;
-                    Console.WriteLine(CommandNumber);
-                }
-            }
-        }
-
-        public void nextMessage()
         {
             while (true)
             {
-                try
-                {
-                    commandArray.Add(2);
-                    Thread.Sleep(10);
-                    commandArray.Add(1);
-                    Thread.Sleep(10);
-                    commandArray.Add(3);
-                    Thread.Sleep(10);
-                    commandArray.Add(0);                   
-                    Thread.Sleep(10);
-                }
-                catch (OutOfMemoryException e)
-                {
-                    //Console.WriteLine(commandArray.Count);
-                }
+               // if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
+               // {
+                //    shoot();
+                    //Console.WriteLine("entered starter");
+               // }
+               // else
+               // {
+                    Move();
+                    Console.WriteLine("entered starter");
+               // }
+                Thread.Sleep(500);
             }
         }
 
-        private bool checkAround()
+        private void Move()
         {
-            Console.WriteLine("My index: "+Map.getMap.MyIndex);
-            Point p = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
-            switch (CommandNumber)
+            Path thePath = Statistics.getStatistics.BestPath;
+            Console.WriteLine("entered move");
+            if (thePath != null)
             {
-                case 0: if (Map.getMap.BoardBlocks[p.X, p.Y+1].ContentCode == SquareContent.Empty)
+                if (thePath.PointList != null)
+                {
+                    if (thePath.PointList.First != null)
                     {
-                        return true;
+                        if (thePath.PointList.First.Next != null)
+                        {
+                            Point block = thePath.PointList.First.Next.Value;
+                            Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
+                            if (me.X > block.X)
+                            {
+                                GameManager.getGameManager.sendMessage("RIGHT#");
+                                Console.WriteLine("right");
+                            }
+                            else if (me.X < block.X)
+                            {
+                                GameManager.getGameManager.sendMessage("LEFT#");
+                                Console.WriteLine("left");
+                            }
+                            else if (me.Y < block.Y)
+                            {
+                                GameManager.getGameManager.sendMessage("DOWN#");
+                                Console.WriteLine("down");
+                            }
+                            else if (me.Y > block.Y)
+                            {
+                                GameManager.getGameManager.sendMessage("UP#");
+                                Console.WriteLine("up");
+                            }
+                        }
+                        else Console.WriteLine("thePath.PointList.first.next is null");
                     }
-                    break;
-
-                case 1: if (Map.getMap.BoardBlocks[p.X+1, p.Y].ContentCode == SquareContent.Empty)
-                    {
-                        return true;
-                    }
-                    break;
-                case 2: if (Map.getMap.BoardBlocks[p.X, p.Y - 1].ContentCode == SquareContent.Empty)
-                    {
-                        return true;
-                    }
-                    break;
-                case 3: if (Map.getMap.BoardBlocks[p.X - 1, p.Y].ContentCode == SquareContent.Empty)
-                    {
-                        return true;
-                    }
-                    break;
+                    else Console.WriteLine("thePath.PointList.first is null");
+                }
+                else Console.WriteLine("thePath.PointList is null");
             }
-            return true;
+            else Console.WriteLine("thePath null");
         }
 
+        private void shoot()
+        {
+            Player me = Map.getMap.AllTanks[Map.getMap.MyIndex];
 
+            Console.WriteLine("entered shoot");
+            if (Statistics.getStatistics.PlayerUp)
+            {
+                switch (me.Direction)
+                {
+                    case 0:
+                        GameManager.getGameManager.sendMessage("SHOOT#");
+                        Console.WriteLine("shoot");
+                        break;
+                    default:
+                        GameManager.getGameManager.sendMessage("UP#");
+                        Console.WriteLine("up");
+                        break;
+                }
+            }
+            else if (Statistics.getStatistics.PlayerRight)
+            {
+                switch (me.Direction)
+                {
+                    case 1:
+                        GameManager.getGameManager.sendMessage("SHOOT#");
+                        Console.WriteLine("shoot");
+                        break;
+                    default:
+                        GameManager.getGameManager.sendMessage("RIGHT#");
+                        Console.WriteLine("right");
+                        break;
+                }
+            }
+            else if (Statistics.getStatistics.PlayerDown)
+            {
+                switch (me.Direction)
+                {
+                    case 2:
+                        GameManager.getGameManager.sendMessage("SHOOT#");
+                        Console.WriteLine("shoot");
+                        break;
+                    default:
+                        GameManager.getGameManager.sendMessage("DOWN#");
+                        Console.WriteLine("down");
+                        break;
+                }
+            }
+            else if(Statistics.getStatistics.PlayerLeft)
+            {
+                switch (me.Direction)
+                {
+                    case 3:
+                        GameManager.getGameManager.sendMessage("SHOOT#");
+                        Console.WriteLine("shoot");
+                        break;
+                    default:
+                        GameManager.getGameManager.sendMessage("LEFT#");
+                        Console.WriteLine("left");
+                        break;
+                }
+            }
+
+        }
 
 
     }

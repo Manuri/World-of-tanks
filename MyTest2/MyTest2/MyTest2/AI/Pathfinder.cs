@@ -9,20 +9,31 @@ namespace MyTest2.AI
 {
     class Pathfinder
     {
-        private static Pathfinder instance; 
-        /*
-         * 
-         * Movements is an array of various directions.
-         * 
-         * */
+        private static Pathfinder instance;
+        LinkedList<Point> path = new LinkedList<Point>();
+
+        // Movements is an array of various directions.        
         Point[] _movements;
 
-        /*
-         * 
-         * Squares is an array of square objects.
-         * 
-         * */
-        CompleteSquare[,] _squares = new CompleteSquare[20, 20];
+        // Squares is an array of square objects.
+        CompleteSquare[,] _squares;
+
+        static Point[,] points;
+
+        int cost = 0;
+
+        public static Pathfinder getPathFinder
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Pathfinder();
+                }
+                return instance;
+            }
+        }
+
         public CompleteSquare[,] Squares
         {
             get { return _squares; }
@@ -32,7 +43,15 @@ namespace MyTest2.AI
         public Pathfinder()
         {
             InitMovements(4);
-            ClearSquares();
+          //  ClearSquares();
+            points = new Point[Map.getMap.GridLength, Map.getMap.GridLength];
+            for (int i = 0; i < Map.getMap.GridLength; i++)
+            {
+                for (int j = 0; j < Map.getMap.GridLength; j++)
+                {
+                    points[i, j] = new Point(i,j); 
+                }
+            }
         }
 
         public void InitMovements(int movementCount)
@@ -67,19 +86,16 @@ namespace MyTest2.AI
                 };
             }
         }
-
-        public void ClearSquares()
+        
+       /* public void ClearSquares()
         {
-            /*
-             * 
-             * Reset every square.
-             * 
-             * */
+             //Reset every square.
+             
             foreach (Point point in AllSquares())
             {
                 _squares[point.X, point.Y] = new CompleteSquare();
             }
-        }
+        } */
 
         public void ClearLogic()
         {
@@ -108,6 +124,15 @@ namespace MyTest2.AI
              * 
              * */
             //Point startingPoint = FindCode(SquareContent.me);
+
+            Squares = Map.getMap.BoardBlocks;
+            //_squares = Map.getMap.BoardBlocks;
+           // Squares[1, 1].DistanceSteps = 24;
+           // _squares[1, 1].DistanceSteps = 24;
+
+            //Console.WriteLine("checking inside pathfind, _squares[1,1].distanceSteps="+_squares[1,1].DistanceSteps);
+            //Console.WriteLine("checking inside pathfind, inMap[1,1].distanceSteps="+Map.getMap.BoardBlocks[1,1].DistanceSteps);
+
             int heroX = startingPoint.X;
             int heroY = startingPoint.Y;
             if (heroX == -1 || heroY == -1)
@@ -119,7 +144,9 @@ namespace MyTest2.AI
              * Hero starts at distance of 0.
              * 
              * */
+            Console.WriteLine("before: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
             _squares[heroX, heroY].DistanceSteps = 0;
+            Console.WriteLine("after: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
 
             while (true)
             {
@@ -135,6 +162,8 @@ namespace MyTest2.AI
                     int x = mainPoint.X;
                     int y = mainPoint.Y;
 
+                    Console.WriteLine("inside pathfind(), mainPoint: "+mainPoint.X+", "+mainPoint.Y);
+
                     /*
                      * 
                      * If the square is open, look through valid moves given
@@ -144,17 +173,22 @@ namespace MyTest2.AI
                     if (SquareOpen(x, y))
                     {
                         int passHere = _squares[x, y].DistanceSteps;
+                        Console.WriteLine("inside pathfind(), pass here: "+passHere);
 
                         foreach (Point movePoint in ValidMoves(x, y))
                         {
                             int newX = movePoint.X;
                             int newY = movePoint.Y;
                             int newPass = passHere + 1;
+                            Console.WriteLine("inside pathfind(), movepoint: "+movePoint.X+"' "+movePoint.Y);
+                            Console.WriteLine("inside pathfind(), newpass: " + newPass);
+                            Console.WriteLine("inside pathfind(), _squares[newX, newY].DistanceSteps: " + _squares[newX, newY].DistanceSteps);
 
                             if (_squares[newX, newY].DistanceSteps > newPass)
                             {
                                 _squares[newX, newY].DistanceSteps = newPass;
                                 madeProgress = true;
+                                Console.WriteLine("madeProgress");
                             }
                         }
                     }
@@ -181,11 +215,11 @@ namespace MyTest2.AI
             {
                 return false;
             }
-            if (x > 19)
+            if (x > 9)
             {
                 return false;
             }
-            if (y > 19)
+            if (y > 9)
             {
                 return false;
             }
@@ -233,7 +267,8 @@ namespace MyTest2.AI
             return new Point(-1, -1);
         }
 
-        public void HighlightPath(Point startingPoint)
+       // public void HighlightPath(Point startingPoint)
+        public Path HighlightPath(Point startingPoint)
         {
             /*
              * 
@@ -243,17 +278,19 @@ namespace MyTest2.AI
            // Point startingPoint = FindCode(goal);
             int pointX = startingPoint.X;
             int pointY = startingPoint.Y;
+            path = new LinkedList<Point>();
+            cost = 0;
 
             // Mytesting
             Console.WriteLine("monster point: " + pointX + " " + pointY);
-            int step = 0;
-            Point[] thePath = new Point[50];
+           // int step = 0;
+           // Point[] thePath = new Point[50];
             //my testing over
 
             if (pointX == -1 && pointY == -1)
             {
                 Console.WriteLine("inside if");
-                return;
+                return null;
             }
 
             while (true)
@@ -271,9 +308,11 @@ namespace MyTest2.AI
                 foreach (Point movePoint in ValidMoves(pointX, pointY))
                 {
                     int count = _squares[movePoint.X, movePoint.Y].DistanceSteps;
+                    Console.WriteLine("count before if "+count);
                     if (count < lowest)
                     {
                         lowest = count;
+                        Console.WriteLine("count: "+count);
                         lowestPoint.X = movePoint.X;
                         lowestPoint.Y = movePoint.Y;
                     }
@@ -291,9 +330,12 @@ namespace MyTest2.AI
                     _squares[lowestPoint.X, lowestPoint.Y].IsPath = true;
 
                     //my testing
-                    Console.WriteLine("step" + step + " " + lowestPoint.X + ", " + lowestPoint.Y);
-                    thePath[step] = new Point(lowestPoint.X, lowestPoint.Y);
-                    step++;
+                    //Console.WriteLine("step" + step + " " + lowestPoint.X + ", " + lowestPoint.Y);
+                    //thePath[step] = new Point(lowestPoint.X, lowestPoint.Y);
+                    path.AddFirst(new Point(lowestPoint.X, lowestPoint.Y));
+                    cost += 1;
+                    Console.WriteLine("cost adding.. "+cost);
+                    //step++;
                     //my testing over
 
                     pointX = lowestPoint.X;
@@ -301,6 +343,7 @@ namespace MyTest2.AI
                 }
                 else
                 {
+                    Console.WriteLine("else");
                     break;
                 }
 
@@ -311,10 +354,13 @@ namespace MyTest2.AI
                      * 
                      * We went from monster to hero, so we're finished.
                      * 
-                     * */
-                    break;
+                     * */                  
+                    //break;
+                    Console.WriteLine("path marked");
+                    return new Path(path,cost);
                 }
             }
+            return null;
         }
 
         private static IEnumerable<Point> AllSquares()
@@ -324,11 +370,12 @@ namespace MyTest2.AI
              * Return every point on the board in order.
              * 
              * */
-            for (int x = 0; x < 20; x++)
+            for (int x = 0; x < Map.getMap.GridLength; x++)
             {
-                for (int y = 0; y < 20; y++)
+                for (int y = 0; y < Map.getMap.GridLength; y++)
                 {
-                    yield return new Point(x, y);
+                    //yield return new Point(x, y);
+                    yield return points[x, y];
                 }
             }
         }
@@ -348,10 +395,24 @@ namespace MyTest2.AI
                 if (ValidCoordinates(newX, newY) &&
                     SquareOpen(newX, newY))
                 {
-                    yield return new Point(newX, newY);
+                   // yield return new Point(newX, newY);
+                    yield return points[newX, newY];
                 }
             }
+     
         }
+
+        public Path getShortestpath(Point me, Point goal)
+        {
+            Pathfind(me);
+            return HighlightPath(goal);
+        }
+
+        public List<Path> sortAcoordingToCosts(ref List<Path> pathList)
+        {
+            pathList.Sort();
+            return pathList;
+        }   
     }
     }
 

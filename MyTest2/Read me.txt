@@ -1,1 +1,1 @@
-removed console.writeline from b
+this version is working but DAMN SLOW. This has a lot of console.writelines. 

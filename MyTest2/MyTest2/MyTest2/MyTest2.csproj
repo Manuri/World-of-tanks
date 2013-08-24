@@ -109,8 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\AIBrain.cs" />
+    <Compile Include="AI\Path.cs" />
     <Compile Include="AI\Pathfinder.cs" />
     <Compile Include="AI\Square.cs" />
+    <Compile Include="AI\Statistics.cs" />
     <Compile Include="Beans\CoinPile.cs" />
     <Compile Include="Beans\Player.cs" />
     <Compile Include="Beans\Treasure.cs" />

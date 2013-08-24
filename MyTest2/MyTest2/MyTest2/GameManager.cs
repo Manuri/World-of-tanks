@@ -145,8 +145,11 @@ namespace MyTest2
 
         private void startMyPlayer()
         {
-            Thread commander = new Thread(AIBrain.getAI.nextMessage);
-            commander.Start();
+            Thread playerStatUpdater = new Thread(Statistics.getStatistics.checkPlayers);
+            playerStatUpdater.Start();
+
+            Thread treasureStatUpdater = new Thread(Statistics.getStatistics.findShortestPathsToTreasures);
+            treasureStatUpdater.Start();
 
             Thread aiOperator = new Thread(AIBrain.getAI.starter);
             aiOperator.Start();
@@ -356,7 +359,7 @@ namespace MyTest2
 
         private void errorHandler(String message)
         {
-            if (message == "TOO_QUICK" || message == "CELL_OCCUPIED")
+            /*if (message == "TOO_QUICK" || message == "CELL_OCCUPIED")
             {
                // AIBrain.getAI.theTimer.Stop();
                 if (AIBrain.getAI.CommandNumber > 0)
@@ -367,7 +370,7 @@ namespace MyTest2
                 }
                // AIBrain.getAI.theTimer.Start();
                 Console.WriteLine("oops "+message);
-            }
+            }*/
         }
     }
 }
