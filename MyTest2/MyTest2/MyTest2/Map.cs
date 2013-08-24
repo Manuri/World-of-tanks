@@ -27,13 +27,13 @@ namespace MyTest2
 
         public Map()
         {
-            _allTanks = new Player[5];
+            _allTanks = null;
            // _coinList = new Dictionary<Point,CoinPile>();
             _coinList = new ConcurrentDictionary<Point, CoinPile>();
 
            // _lifePackList = new Dictionary<Point, Treasure>();
             _lifePackList = new ConcurrentDictionary<Point, Treasure>();
-            _gridLength = 10;
+            _gridLength = 20;
             _boardBlocks = new CompleteSquare[GridLength,GridLength];
             _noOfPlayers = 0;
         }

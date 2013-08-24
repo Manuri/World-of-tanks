@@ -130,7 +130,8 @@ namespace MyTest2
             }
 
             Player[] tanks = new Player[noOfPlayers];
-            tanks = Map.getMap.AllTanks;
+           // tanks = Map.getMap.AllTanks;
+            Map.getMap.AllTanks = tanks;
 
             for (int j = 0; j < noOfPlayers; j++)
             {

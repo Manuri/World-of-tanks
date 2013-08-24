@@ -209,13 +209,16 @@ namespace MyTest2
         {
             int i = 0;
 
-            foreach (Player tank in tanks)
+            if (tanks != null)
             {
-                if (tank!=null && tank.IsAlive)
+                foreach (Player tank in tanks)
                 {
-                    Vector2 tankOrigin = new Vector2(tankTextures[i].Bounds.Center.X, tankTextures[i].Bounds.Center.Y);
-                    spriteBatch.Draw(tankTextures[i], tank.ScreenPosition, null, Color.White, (MathHelper.PiOver2)*(tank.Direction), tankOrigin, tankScaling, SpriteEffects.None, 0);
-                    i++;
+                    if (tank != null && tank.IsAlive)
+                    {
+                        Vector2 tankOrigin = new Vector2(tankTextures[i].Bounds.Center.X, tankTextures[i].Bounds.Center.Y);
+                        spriteBatch.Draw(tankTextures[i], tank.ScreenPosition, null, Color.White, (MathHelper.PiOver2) * (tank.Direction), tankOrigin, tankScaling, SpriteEffects.None, 0);
+                        i++;
+                    }
                 }
             }
         }
@@ -224,12 +227,14 @@ namespace MyTest2
         {
             tanks = Map.getMap.AllTanks;
             int gridLength = Map.getMap.GridLength;
-
-            foreach (Player tank in tanks)
+            if (tanks != null)
             {
-                if (tank != null)
+                foreach (Player tank in tanks)
                 {
-                    tank.ScreenPosition = new Vector2((tank.Coordinate.X) * widthOfABlock + widthOfABlock / 2, (tank.Coordinate.Y) * widthOfABlock + widthOfABlock / 2);
+                    if (tank != null)
+                    {
+                        tank.ScreenPosition = new Vector2((tank.Coordinate.X) * widthOfABlock + widthOfABlock / 2, (tank.Coordinate.Y) * widthOfABlock + widthOfABlock / 2);
+                    }
                 }
             }
 
@@ -305,15 +310,16 @@ namespace MyTest2
             spriteBatch.DrawString(font, "P3", new Vector2(750, 490), Color.White);
             spriteBatch.DrawString(font, "P4", new Vector2(750, 510), Color.White);
             int i = 430;
-            
-               for(int j=0; j<5; j++) {
-                   if (tanks[j] != null)
-                   {
-                       spriteBatch.DrawString(font, tanks[j].Score.ToString(), new Vector2(1015, i), Color.White);
-                       spriteBatch.DrawString(font, tanks[j].Health.ToString(), new Vector2(935, i), Color.White);
-                       spriteBatch.DrawString(font, tanks[j].Coins.ToString(), new Vector2(865, i), Color.White);
-                       i = i + 20;
-                   }
+
+            for (int j = 0; j < Map.getMap.NoOfPlayers;j++ )
+            {
+                if (tanks[j] != null)
+                {
+                    spriteBatch.DrawString(font, tanks[j].Score.ToString(), new Vector2(1015, i), Color.White);
+                    spriteBatch.DrawString(font, tanks[j].Health.ToString(), new Vector2(935, i), Color.White);
+                    spriteBatch.DrawString(font, tanks[j].Coins.ToString(), new Vector2(865, i), Color.White);
+                    i = i + 20;
+                }
             }
         }
 
