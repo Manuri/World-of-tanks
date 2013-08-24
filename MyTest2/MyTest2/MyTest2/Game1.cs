@@ -29,14 +29,14 @@ namespace MyTest2
 
         int screenWidth;
         int screenHeight;
-        int numberOfPlayers = 5;
+        int numberOfPlayers=5;
         float tankScaling;
         //int widthOfABlock;
         float widthOfABlock;
         int gridLength;
         
         CompleteSquare[,] bd;
-        Player[] tanks = new Player[5];
+        Player[] tanks=new Player[5];
 
         List<CoinPile> pilesToDraw ;
         List<Treasure> lifePacksToDraw ;

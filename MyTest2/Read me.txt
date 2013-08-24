@@ -1,1 +1,1 @@
-going to change i's bool candonextmove to an int globakUpdateCounter
+going to change j is onTImedEvent to a while loop

@@ -14,7 +14,12 @@ namespace MyTest2
     {
         private static GameManager instance;
         //public bool canDoNextMove = false;
-        public int globalUpdateCounter = 0;
+        public int globalUpdateCounter;
+
+        public GameManager()
+        {
+            globalUpdateCounter = 0;
+        }
 
         public static GameManager getGameManager
         {

@@ -13,22 +13,24 @@ namespace MyTest2.AI
     class AIBrain
     {
         private static AIBrain instance;
-        private int previousGlobalUpdate=0;
+        private int previousGlobalUpdate;
 
       //  String[] messages;
 
 
-      /*  public AIBrain()
+        public AIBrain()
         {
-            messages = new String[5];
+           /* messages = new String[5];
 
             messages[0] = "UP#";
             messages[1] = "DOWN#";
             messages[2] = "RIGHT#";
             messages[3] = "LEFT#";
-            messages[4] = "SHOOT#";
+            messages[4] = "SHOOT#";*/
 
-        }*/
+            previousGlobalUpdate = 0;
+
+        }
 
         public static AIBrain getAI
         {
@@ -60,13 +62,23 @@ namespace MyTest2.AI
                  // }
                   Thread.Sleep(1000);
               }*/
-            System.Timers.Timer aTimer = new System.Timers.Timer(1);
+           /* System.Timers.Timer aTimer = new System.Timers.Timer(1);
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Enabled = true;
-            GC.KeepAlive(aTimer);
+            GC.KeepAlive(aTimer);*/
+            while (true)
+            {
+                if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
+                {
+                    Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
+                    Console.WriteLine("globalUpdateCounter " + GameManager.getGameManager.globalUpdateCounter);
+                    Statistics.getStatistics.decideTheMove();
+                    previousGlobalUpdate++;
+                }
+            }
         }
 
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
+    /*    private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             
             
@@ -85,7 +97,7 @@ namespace MyTest2.AI
                 }
 
 
-        }
+        }*/
 
         private void shoot()
         {

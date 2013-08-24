@@ -112,7 +112,7 @@ namespace MyTest2.AI
             }
         }
 
-        
+        #region pathfinding
 
         public void Pathfind()
         {
@@ -220,6 +220,8 @@ namespace MyTest2.AI
            // }
         }
 
+        #endregion pathfinding
+
         static private bool ValidCoordinates(int x, int y)
         {
             /*
@@ -276,13 +278,10 @@ namespace MyTest2.AI
             }
         }
 
-        private Point FindCode(SquareContent contentIn)
+       /* private Point FindCode(SquareContent contentIn)
         {
-            /*
-             * 
-             * Find the requested code and return the point.
-             * 
-             * */
+            // Find the requested code and return the point.
+             
             foreach (Point point in AllSquares())
             {
                 if (_squares[point.X, point.Y].ContentCode == contentIn)
@@ -291,9 +290,11 @@ namespace MyTest2.AI
                 }
             }
             return new Point(-1, -1);
-        }
+        }*/
 
-       // public void HighlightPath(Point startingPoint)
+        #region higlighting path
+
+        // public void HighlightPath(Point startingPoint)
         public void HighlightPath(ref ClosestTreasure treasure)
         {
            // Console.WriteLine("Highlighting path to treasure point: "+treasure.Coordinate.X+", "+treasure.Coordinate.Y);
@@ -429,6 +430,8 @@ namespace MyTest2.AI
                 }
             }
         }
+
+        #endregion higlighting path
 
         private static IEnumerable<Point> AllSquares()
         {

@@ -15,7 +15,7 @@ namespace MyTest2.AI
         public ClosestTreasure _closestCoin;
         public ClosestTreasure _closestLifePack;
         public ClosestTreasure _bestToFollow;
-        private int deadCount = 0;
+        private int deadCount;
         private static Player myPlayer;
         private static Player[] all;
         private static Player[] enemies;
@@ -30,6 +30,7 @@ namespace MyTest2.AI
             _closestCoin = new ClosestTreasure();
             _closestLifePack = new ClosestTreasure();
 
+            deadCount = 0;
             myPlayer = Map.getMap.AllTanks[Map.getMap.MyIndex];
             all = Map.getMap.AllTanks;
             enemies = new Player[Map.getMap.NoOfPlayers - 1];
