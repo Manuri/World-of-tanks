@@ -48,25 +48,24 @@ namespace MyTest2.AI
 
         public void starter()
         {
-            /*  while (true)
+              while (true)
               {
-                 // if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
-                 // {
-                  //    shoot();
+                  Statistics.getStatistics.checkPlayers();
+                  if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
+                  {
+                      shoot();
                       //Console.WriteLine("entered starter");
-                 // }
-                 // else
-                 // {
-                      Move();
-                      //Console.WriteLine("entered starter");
-                 // }
-                  Thread.Sleep(1000);
-              }*/
-           /* System.Timers.Timer aTimer = new System.Timers.Timer(1);
-            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            aTimer.Enabled = true;
-            GC.KeepAlive(aTimer);*/
-            while (true)
+                  }
+                  else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
+                  {
+                    Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
+                    Console.WriteLine("globalUpdateCounter " + GameManager.getGameManager.globalUpdateCounter);
+                    Statistics.getStatistics.decideTheMove();
+                    Move();
+                    previousGlobalUpdate++;
+                  }
+              }
+        /*    while (true)
             {
                 if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
                 {
@@ -76,7 +75,7 @@ namespace MyTest2.AI
                     Move();
                     previousGlobalUpdate++;
                 }
-            }
+            }*/
         }
 
     /*    private void OnTimedEvent(object source, ElapsedEventArgs e)

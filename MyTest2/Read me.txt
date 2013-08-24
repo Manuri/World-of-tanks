@@ -1,1 +1,1 @@
-going to change k. take the AIrain.move() out of decideTheMove() in statistics and put it in AIBrain class
+going to change n to shoot too.
