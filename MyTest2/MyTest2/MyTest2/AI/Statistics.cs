@@ -15,6 +15,8 @@ namespace MyTest2.AI
         private bool _playerUp,_playerDown,_playerRight,_playerLeft;
         private ConcurrentDictionary<Point,CoinPile> coinList;
         private ConcurrentDictionary<Point, Treasure> lifeList;
+        List<Path> coinShortestPathList;
+        List<Path> lifeShortestPathList;
         private Path bestPath;
 
 
@@ -178,35 +180,37 @@ namespace MyTest2.AI
         {
             while (true)
             {
-                Console.WriteLine("entered findShortestPathsToTreasures()");
+                //Console.WriteLine("entered findShortestPathsToTreasures()");
 
                 coinList = Map.getMap.CoinList;
                 lifeList = Map.getMap.LifePackList;
                 Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
-                Console.WriteLine("Statistics,findShortestPathsToTreasures(), Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate: "+me.X+", "+me.Y);
+                //Console.WriteLine("Statistics,findShortestPathsToTreasures(), Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate: "+me.X+", "+me.Y);
 
-                List<Path> coinShortestPathList = new List<Path>();
-                List<Path> lifeShortestPathList = new List<Path>();
+                /*List<Path> coinShortestPathList = new List<Path>();
+                List<Path> lifeShortestPathList = new List<Path>();*/
 
-                Console.WriteLine("checking coinList inside findShortestPathsToTreasures()" + coinList.Count);
+                coinShortestPathList = new List<Path>();
+                lifeShortestPathList = new List<Path>();
+                //Console.WriteLine("checking coinList inside findShortestPathsToTreasures()" + coinList.Count);
 
                 foreach (CoinPile c in coinList.Values)
                 {
-                    Console.WriteLine("x coord of coinpile: " + c.Coordinate.X);
+                    //Console.WriteLine("x coord of coinpile: " + c.Coordinate.X);
                     Path shortest = Pathfinder.getPathFinder.getShortestpath(me, c.Coordinate);
                     setRealCostsToPath(ref shortest, false);
                     coinShortestPathList.Add(shortest);
-                    Console.WriteLine("*" + shortest.Cost);
+                    //Console.WriteLine("*" + shortest.Cost);
                 }
 
                 foreach (Treasure lp in lifeList.Values)
                 {
-                    Console.WriteLine("x coord of lifepack: " + lp.Coordinate.X);
+                    //Console.WriteLine("x coord of lifepack: " + lp.Coordinate.X);
                     Path shortest = Pathfinder.getPathFinder.getShortestpath(me, lp.Coordinate);
                     setRealCostsToPath(ref shortest, true);
                     lifeShortestPathList.Add(shortest);
-                    Console.WriteLine("Statistics, checking lifeshortestpathlist, lifeShortestPathList.ElementAt(0).Cost: " + lifeShortestPathList.ElementAt(0).Cost);
-                    Console.WriteLine("*" + shortest.Cost);
+                    //Console.WriteLine("Statistics, checking lifeshortestpathlist, lifeShortestPathList.ElementAt(0).Cost: " + lifeShortestPathList.ElementAt(0).Cost);
+                   // Console.WriteLine("*" + shortest.Cost);
                 }
 
                 Pathfinder.getPathFinder.sortAcoordingToCosts(ref coinShortestPathList);
@@ -218,23 +222,25 @@ namespace MyTest2.AI
                 try
                 {
                     bestCoinPath = coinShortestPathList.First();
-                    Console.WriteLine(bestCoinPath.Cost);
+                    coinShortestPathList = null;
+                    //Console.WriteLine(bestCoinPath.Cost);
                     //Path bestLifePath = lifeShortestPathList.ElementAt(0);
                 }
                 catch (InvalidOperationException ioe)
                 {
-                    Console.WriteLine("got invalid operation in assigning best coin path");
-                    Console.WriteLine(ioe.Message);
+                   // Console.WriteLine("got invalid operation in assigning best coin path");
+                   // Console.WriteLine(ioe.Message);
                 }
                 try
                 {
                     bestLifePath = lifeShortestPathList.First();
-                    Console.WriteLine(bestLifePath.Cost);
+                    lifeShortestPathList = null;
+                   // Console.WriteLine(bestLifePath.Cost);
                 }
                 catch (InvalidOperationException ioe)
                 {
-                    Console.WriteLine("got invalid operation in assigning best life path");
-                    Console.WriteLine(ioe.Message);
+                   // Console.WriteLine("got invalid operation in assigning best life path");
+                  //  Console.WriteLine(ioe.Message);
                 }
                 if (bestCoinPath != null && bestLifePath != null)
                 {

@@ -1,1 +1,6 @@
-this version is working but DAMN SLOW. This has a lot of console.writelines. 
+remove console.writelines from d.
+changed move function.
+changed thread.sleep in starter()
+
+/////////////////////////////
+I guess theres some socket problem. so messages don't go. So check this using two machines.

@@ -54,9 +54,9 @@ namespace MyTest2.AI
                // else
                // {
                     Move();
-                    Console.WriteLine("entered starter");
+                    //Console.WriteLine("entered starter");
                // }
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
 
@@ -73,13 +73,15 @@ namespace MyTest2.AI
                         if (thePath.PointList.First.Next != null)
                         {
                             Point block = thePath.PointList.First.Next.Value;
+                            Console.WriteLine("move to "+block.X+", "+block.Y);
                             Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
-                            if (me.X > block.X)
+                            Console.WriteLine("I'm at "+me.X+", "+me.Y);
+                            if (me.X < block.X)
                             {
                                 GameManager.getGameManager.sendMessage("RIGHT#");
                                 Console.WriteLine("right");
                             }
-                            else if (me.X < block.X)
+                            else if (me.X > block.X)
                             {
                                 GameManager.getGameManager.sendMessage("LEFT#");
                                 Console.WriteLine("left");

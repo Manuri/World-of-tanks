@@ -38,11 +38,14 @@ namespace MyTest2
         CompleteSquare[,] bd;
         Player[] tanks = new Player[5];
 
+        List<CoinPile> pilesToDraw ;
+        List<Treasure> lifePacksToDraw ;
+
         //private Dictionary<Point, CoinPile> coinList = new Dictionary<Point, CoinPile>();
-        private ConcurrentDictionary<Point, CoinPile> coinList = new ConcurrentDictionary<Point, CoinPile>();
+        //private ConcurrentDictionary<Point, CoinPile> coinList = new ConcurrentDictionary<Point, CoinPile>();
 
         //private Dictionary<Point, Treasure> lifePackList = new Dictionary<Point, Treasure>();
-        private ConcurrentDictionary<Point, Treasure> lifePackList = new ConcurrentDictionary<Point, Treasure>();
+        //private ConcurrentDictionary<Point, Treasure> lifePackList = new ConcurrentDictionary<Point, Treasure>();
 
         public Game1()
         {
@@ -101,6 +104,8 @@ namespace MyTest2
 
             //bd = new CompleteSquare[20, 20];
             bd = new CompleteSquare[gridLength, gridLength];
+            pilesToDraw = new List<CoinPile>();
+            lifePacksToDraw = new List<Treasure>();
 
             if (gridLength == 10) tankScaling = 1f;
             else tankScaling = 0.7f;
@@ -221,7 +226,8 @@ namespace MyTest2
 
         private void drawCoinPiles()
         {
-            coinList = Map.getMap.CoinList;
+
+           // coinList = Map.getMap.CoinList;
             int width = (int)widthOfABlock;
 
             Rectangle coinRectangle;
@@ -235,17 +241,22 @@ namespace MyTest2
                 }
             }*/
 
-            var pilesToDraw = coinList.Values.Where(p => p.IsPresent).ToList();
+            //var pilesToDraw = new List<CoinPile>();
+           
+            //pilesToDraw = coinList.Values.Where(p => p.IsPresent).ToList();
+            pilesToDraw = Map.getMap.CoinList.Values.Where(p => p.IsPresent).ToList();
+
             foreach (var c in pilesToDraw)
             {
                 coinRectangle = new Rectangle(width * c.Coordinate.X, width * c.Coordinate.Y, width, width);
                 spriteBatch.Draw(coin, coinRectangle, Color.White);
             }
+            pilesToDraw = null; //to avoid OOM Exception. dont know whether this will work
         }
 
         private void drawLifePacks()
         {
-            lifePackList = Map.getMap.LifePackList;
+            //lifePackList = Map.getMap.LifePackList;
             int width = (int)widthOfABlock;
 
             Rectangle lifePackRectangle;
@@ -257,15 +268,17 @@ namespace MyTest2
                   lifePackRectangle = new Rectangle(width * pair.Value.Coordinate.X, width * pair.Value.Coordinate.Y, width, width);
                   spriteBatch.Draw(lifePack, lifePackRectangle, Color.White);
                }
-            }*/
+            }*/            
 
-            var lifePacksToDraw = lifePackList.Values.Where(lp => lp.IsPresent).ToList();
+            //lifePacksToDraw = lifePackList.Values.Where(lp => lp.IsPresent).ToList();
+            lifePacksToDraw = Map.getMap.LifePackList.Values.Where(lp => lp.IsPresent).ToList();
+
             foreach (var lp in lifePacksToDraw)
             {
                 lifePackRectangle = new Rectangle(width * lp.Coordinate.X, width * lp.Coordinate.Y, width, width);
                 spriteBatch.Draw(lifePack, lifePackRectangle, Color.White);
             }
-            
+            lifePacksToDraw = null;
         }
 
        

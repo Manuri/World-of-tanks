@@ -89,13 +89,17 @@ namespace MyTest2.Utilities
         {
 
             IPAddress ip = IPAddress.Parse(clientIP);
-
+            TcpListener listener;
+            Socket s;
             //Console.WriteLine("Waiting for a connection.....");
             while (true)
             {
-                TcpListener listener = new TcpListener(ip, 7000);
+                //TcpListener listener = new TcpListener(ip, 7000);
+                listener = new TcpListener(ip, 7000);
+
                 listener.Start();
-                Socket s = listener.AcceptSocket();
+                //Socket s = listener.AcceptSocket();
+                s = listener.AcceptSocket();
                 if (s.Connected)
                 {
                     //Console.WriteLine("\nConnection accepted from " + s.RemoteEndPoint);

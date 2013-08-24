@@ -341,7 +341,6 @@ namespace MyTest2
             //this needs to be called when a timer expires
             CoinPile value; 
             Map.getMap.CoinList.TryRemove(coin.Coordinate, out value);
-
             //Console.WriteLine("coinpile removed.value: "+coin.Value);
 
         }

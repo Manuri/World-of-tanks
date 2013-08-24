@@ -10,8 +10,8 @@ namespace MyTest2.AI
     class Pathfinder
     {
         private static Pathfinder instance;
-        LinkedList<Point> path = new LinkedList<Point>();
-
+        //LinkedList<Point> path = new LinkedList<Point>();
+        LinkedList<Point> path;
         // Movements is an array of various directions.        
         Point[] _movements;
 
@@ -45,6 +45,7 @@ namespace MyTest2.AI
             InitMovements(4);
           //  ClearSquares();
             points = new Point[Map.getMap.GridLength, Map.getMap.GridLength];
+
             for (int i = 0; i < Map.getMap.GridLength; i++)
             {
                 for (int j = 0; j < Map.getMap.GridLength; j++)
@@ -144,9 +145,9 @@ namespace MyTest2.AI
              * Hero starts at distance of 0.
              * 
              * */
-            Console.WriteLine("before: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
+           // Console.WriteLine("before: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
             _squares[heroX, heroY].DistanceSteps = 0;
-            Console.WriteLine("after: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
+          //  Console.WriteLine("after: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
 
             while (true)
             {
@@ -162,7 +163,7 @@ namespace MyTest2.AI
                     int x = mainPoint.X;
                     int y = mainPoint.Y;
 
-                    Console.WriteLine("inside pathfind(), mainPoint: "+mainPoint.X+", "+mainPoint.Y);
+                    //Console.WriteLine("inside pathfind(), mainPoint: "+mainPoint.X+", "+mainPoint.Y);
 
                     /*
                      * 
@@ -173,22 +174,22 @@ namespace MyTest2.AI
                     if (SquareOpen(x, y))
                     {
                         int passHere = _squares[x, y].DistanceSteps;
-                        Console.WriteLine("inside pathfind(), pass here: "+passHere);
+                       // Console.WriteLine("inside pathfind(), pass here: "+passHere);
 
                         foreach (Point movePoint in ValidMoves(x, y))
                         {
                             int newX = movePoint.X;
                             int newY = movePoint.Y;
                             int newPass = passHere + 1;
-                            Console.WriteLine("inside pathfind(), movepoint: "+movePoint.X+"' "+movePoint.Y);
-                            Console.WriteLine("inside pathfind(), newpass: " + newPass);
-                            Console.WriteLine("inside pathfind(), _squares[newX, newY].DistanceSteps: " + _squares[newX, newY].DistanceSteps);
+                            //Console.WriteLine("inside pathfind(), movepoint: "+movePoint.X+"' "+movePoint.Y);
+                            //Console.WriteLine("inside pathfind(), newpass: " + newPass);
+                            //Console.WriteLine("inside pathfind(), _squares[newX, newY].DistanceSteps: " + _squares[newX, newY].DistanceSteps);
 
                             if (_squares[newX, newY].DistanceSteps > newPass)
                             {
                                 _squares[newX, newY].DistanceSteps = newPass;
                                 madeProgress = true;
-                                Console.WriteLine("madeProgress");
+                               // Console.WriteLine("madeProgress");
                             }
                         }
                     }
@@ -282,7 +283,7 @@ namespace MyTest2.AI
             cost = 0;
 
             // Mytesting
-            Console.WriteLine("monster point: " + pointX + " " + pointY);
+           // Console.WriteLine("monster point: " + pointX + " " + pointY);
            // int step = 0;
            // Point[] thePath = new Point[50];
             //my testing over
@@ -305,47 +306,78 @@ namespace MyTest2.AI
                 Point lowestPoint = new Point(0, 0);
                 int lowest = 10000;
 
-                foreach (Point movePoint in ValidMoves(pointX, pointY))
+                //my test
+              /*  foreach (Point movePoint in ValidMoves(pointX, pointY))
                 {
                     int count = _squares[movePoint.X, movePoint.Y].DistanceSteps;
-                    Console.WriteLine("count before if "+count);
+                    //Console.WriteLine("count before if "+count);
                     if (count < lowest)
                     {
                         lowest = count;
-                        Console.WriteLine("count: "+count);
+                        //Console.WriteLine("count: "+count);
                         lowestPoint.X = movePoint.X;
                         lowestPoint.Y = movePoint.Y;
                     }
-                }
-                if (lowest != 10000)
+                }*/
+
+                for (int i = 0; i < 4; i++)
                 {
-                    /*
-                     * 
-                     * Mark the square as part of the path if it is the lowest
-                     * number. Set the current position as the square with
-                     * that number of steps.
-                     * 
-                     * */
+                    int newX = points[pointX,pointY].X + _movements[i].X;
+                    int newY = points[pointX, pointY].Y + _movements[i].Y;
 
-                    _squares[lowestPoint.X, lowestPoint.Y].IsPath = true;
-
-                    //my testing
-                    //Console.WriteLine("step" + step + " " + lowestPoint.X + ", " + lowestPoint.Y);
-                    //thePath[step] = new Point(lowestPoint.X, lowestPoint.Y);
-                    path.AddFirst(new Point(lowestPoint.X, lowestPoint.Y));
-                    cost += 1;
-                    Console.WriteLine("cost adding.. "+cost);
-                    //step++;
-                    //my testing over
-
-                    pointX = lowestPoint.X;
-                    pointY = lowestPoint.Y;
+                    if (ValidCoordinates(newX, newY) && SquareOpen(newX, newY))
+                    {
+                        int count = _squares[points[newX,newY].X, points[newX,newY].Y].DistanceSteps;
+                        //Console.WriteLine("count before if "+count);
+                        if (count < lowest)
+                        {
+                            lowest = count;
+                            //Console.WriteLine("count: "+count);
+                            lowestPoint.X = points[newX, newY].X;
+                            lowestPoint.Y = points[newX, newY].Y;
+                        }
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("else");
-                    break;
-                }
+                //my test over
+                    if (lowest != 10000)
+                    {
+                        /*
+                         * 
+                         * Mark the square as part of the path if it is the lowest
+                         * number. Set the current position as the square with
+                         * that number of steps.
+                         * 
+                         * */
+
+                        _squares[lowestPoint.X, lowestPoint.Y].IsPath = true;
+
+                        //my testing
+                        //Console.WriteLine("step" + step + " " + lowestPoint.X + ", " + lowestPoint.Y);
+                        //thePath[step] = new Point(lowestPoint.X, lowestPoint.Y);
+                        //path.AddFirst(new Point(lowestPoint.X, lowestPoint.Y)); //removed to solve outofmemoryexception
+                        try
+                        {
+                            path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);
+                        }
+                        catch (OutOfMemoryException oome)
+                        {
+                            //Console.WriteLine(oome.Message);
+                            Console.WriteLine("oome Exception at HighlightPath");
+                        }
+
+                        cost += 1;
+                        //Console.WriteLine("cost adding.. "+cost);
+                        //step++;
+                        //my testing over
+
+                        pointX = lowestPoint.X;
+                        pointY = lowestPoint.Y;
+                    }
+                    else
+                    {
+                        Console.WriteLine("else");
+                        break;
+                    }
 
                // if (_squares[pointX, pointY].ContentCode == SquareContent.me)
                 if (pointX == Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate.X && pointY == Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate.Y)
@@ -356,7 +388,8 @@ namespace MyTest2.AI
                      * 
                      * */                  
                     //break;
-                    Console.WriteLine("path marked");
+                    //Console.WriteLine("path marked");
+                    path.AddLast(points[startingPoint.X,startingPoint.Y]);
                     return new Path(path,cost);
                 }
             }
