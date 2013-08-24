@@ -1,1 +1,2 @@
-going to change j is onTImedEvent to a while loop
+going to change k to use another thread to decide the move.
+AIBrain only does moving

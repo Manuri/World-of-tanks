@@ -256,8 +256,8 @@ namespace MyTest2.AI
 
         public void decideTheMove()
         {
-          //  while (true)
-          //  {
+            while (true)
+            {
                 Pathfinder.getPathFinder.Pathfind();
                 findLeastDistanceTreasures();
 
@@ -282,9 +282,9 @@ namespace MyTest2.AI
 
                     Pathfinder.getPathFinder.ClearLogic();
 
-                    AIBrain.getAI.Move();
+                    //AIBrain.getAI.Move();
                 }
-           // }
+            }
         }
         
         
