@@ -5,7 +5,6 @@ using System.Text;
 using MyTest2.Beans;
 using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
-using MyTest2.Beans;
 
 namespace MyTest2.AI
 {
@@ -13,12 +12,9 @@ namespace MyTest2.AI
     {
         private static Statistics instance;
         private bool _playerUp,_playerDown,_playerRight,_playerLeft;
-        private ConcurrentDictionary<Point,CoinPile> coinList;
-        private ConcurrentDictionary<Point, Treasure> lifeList;
-        List<Path> coinShortestPathList;
-        List<Path> lifeShortestPathList;
-        private Path bestPath;
-
+        public ClosestTreasure _closestCoin;
+        public ClosestTreasure _closestLifePack;
+        public ClosestTreasure _bestToFollow;
 
         public Statistics()
         {
@@ -26,6 +22,9 @@ namespace MyTest2.AI
             _playerDown = false;
             _playerRight = false;
             _playerLeft = false;
+
+            _closestCoin = new ClosestTreasure();
+            _closestLifePack = new ClosestTreasure();
         }
 
         public static Statistics getStatistics
@@ -38,11 +37,6 @@ namespace MyTest2.AI
                 }
                 return instance;
             }
-        }
-
-        public Path BestPath
-        {
-            get { return bestPath; }
         }
 
         public bool PlayerUp
@@ -122,7 +116,7 @@ namespace MyTest2.AI
             }
         }
 
-        private void setRealCostsToPath(ref Path path, bool isLifePack)
+        public void setRealCostsToPath(ref ClosestTreasure treasure, bool isLifePack)
         {
             int myHealth = Map.getMap.AllTanks[Map.getMap.MyIndex].Health;
 
@@ -131,133 +125,101 @@ namespace MyTest2.AI
                 case true:
                     if (myHealth < 49)
                     {
-                        path.Cost = path.Cost * 1;
+                        treasure.Cost = treasure.Cost * 1;
                     }
                     else if (myHealth < 79)
                     {
-                        path.Cost = path.Cost * 2;
+                        treasure.Cost = treasure.Cost * 2;
                     }
                     else if (myHealth < 99)
                     {
-                        path.Cost = path.Cost * 5;
+                        treasure.Cost = treasure.Cost * 5;
                     }
                     else if (myHealth < 150)
                     {
-                        path.Cost = path.Cost * 8;
+                        treasure.Cost = treasure.Cost * 8;
                     }
                     else
                     {
-                        path.Cost = path.Cost * 9;
+                        treasure.Cost = treasure.Cost * 9;
                     }
                     break;
 
                 case false:
                     if (myHealth < 49)
                     {
-                        path.Cost = path.Cost * 9;
+                        treasure.Cost = treasure.Cost * 9;
                     }
                     else if (myHealth < 79)
                     {
-                        path.Cost = path.Cost * 8;
+                        treasure.Cost = treasure.Cost * 8;
                     }
                     else if (myHealth < 99)
                     {
-                        path.Cost = path.Cost * 5;
+                        treasure.Cost = treasure.Cost * 5;
                     }
                     else if (myHealth < 150)
                     {
-                        path.Cost = path.Cost * 2;
+                        treasure.Cost = treasure.Cost * 2;
                     }
                     else
                     {
-                        path.Cost = path.Cost * 1;
+                        treasure.Cost = treasure.Cost * 1;
                     }
                     break;
             }
         }
 
-        public void findShortestPathsToTreasures()
+        public void findLeastDistanceTreasures()
         {
-            while (true)
+            int coinMin = 10000;
+            int lifePackMin = 10000;
+            int x=0;
+            int y=0;
+            foreach (CoinPile c in Map.getMap.CoinList.Values)
             {
-                //Console.WriteLine("entered findShortestPathsToTreasures()");
+                x = c.Coordinate.X;
+                y = c.Coordinate.Y;
 
-                coinList = Map.getMap.CoinList;
-                lifeList = Map.getMap.LifePackList;
-                Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
-                //Console.WriteLine("Statistics,findShortestPathsToTreasures(), Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate: "+me.X+", "+me.Y);
-
-                /*List<Path> coinShortestPathList = new List<Path>();
-                List<Path> lifeShortestPathList = new List<Path>();*/
-
-                coinShortestPathList = new List<Path>();
-                lifeShortestPathList = new List<Path>();
-                //Console.WriteLine("checking coinList inside findShortestPathsToTreasures()" + coinList.Count);
-
-                foreach (CoinPile c in coinList.Values)
+                if (Pathfinder.getPathFinder.Squares[x, y].DistanceSteps < coinMin)
                 {
-                    //Console.WriteLine("x coord of coinpile: " + c.Coordinate.X);
-                    Path shortest = Pathfinder.getPathFinder.getShortestpath(me, c.Coordinate);
-                    setRealCostsToPath(ref shortest, false);
-                    coinShortestPathList.Add(shortest);
-                    //Console.WriteLine("*" + shortest.Cost);
+                    coinMin = Pathfinder.getPathFinder.Squares[x, y].DistanceSteps;
                 }
+            }
+            _closestCoin.Coordinate = Pathfinder.getPathFinder.Squares[x, y].Coordinate;
+            _closestCoin.Cost = coinMin;
+            Console.WriteLine("closestCoin at " + _closestCoin.Coordinate.X + ", " + _closestCoin.Coordinate.Y + " cost: " + _closestCoin.Cost);
 
-                foreach (Treasure lp in lifeList.Values)
-                {
-                    //Console.WriteLine("x coord of lifepack: " + lp.Coordinate.X);
-                    Path shortest = Pathfinder.getPathFinder.getShortestpath(me, lp.Coordinate);
-                    setRealCostsToPath(ref shortest, true);
-                    lifeShortestPathList.Add(shortest);
-                    //Console.WriteLine("Statistics, checking lifeshortestpathlist, lifeShortestPathList.ElementAt(0).Cost: " + lifeShortestPathList.ElementAt(0).Cost);
-                   // Console.WriteLine("*" + shortest.Cost);
-                }
+            foreach (Treasure lp in Map.getMap.LifePackList.Values)
+            {
+                x = lp.Coordinate.X;
+                y = lp.Coordinate.Y;
 
-                Pathfinder.getPathFinder.sortAcoordingToCosts(ref coinShortestPathList);
-                Pathfinder.getPathFinder.sortAcoordingToCosts(ref lifeShortestPathList);
+                if (Pathfinder.getPathFinder.Squares[x, y].DistanceSteps < lifePackMin)
+                {
+                    lifePackMin = Pathfinder.getPathFinder.Squares[x, y].DistanceSteps;                    
+                }
+            }
+            _closestLifePack.Coordinate = Pathfinder.getPathFinder.Squares[x, y].Coordinate;
+            _closestLifePack.Cost = lifePackMin;
+            Console.WriteLine("closestLifePack at " + _closestLifePack.Coordinate.X + ", " + _closestLifePack.Coordinate.Y + " cost: " + _closestLifePack.Cost);
+        }
 
-                //Path bestCoinPath = coinShortestPathList.ElementAt(0);
-                Path bestCoinPath = null;
-                Path bestLifePath = null;
-                try
-                {
-                    bestCoinPath = coinShortestPathList.First();
-                    coinShortestPathList = null;
-                    //Console.WriteLine(bestCoinPath.Cost);
-                    //Path bestLifePath = lifeShortestPathList.ElementAt(0);
-                }
-                catch (InvalidOperationException ioe)
-                {
-                   // Console.WriteLine("got invalid operation in assigning best coin path");
-                   // Console.WriteLine(ioe.Message);
-                }
-                try
-                {
-                    bestLifePath = lifeShortestPathList.First();
-                    lifeShortestPathList = null;
-                   // Console.WriteLine(bestLifePath.Cost);
-                }
-                catch (InvalidOperationException ioe)
-                {
-                   // Console.WriteLine("got invalid operation in assigning best life path");
-                  //  Console.WriteLine(ioe.Message);
-                }
-                if (bestCoinPath != null && bestLifePath != null)
-                {
+        public void findBestTreasureToFollow()
+        {
+            if (_closestCoin.CompareTo(_closestLifePack) <= 1)
+            {
+                _bestToFollow = _closestCoin;
 
-                    if (bestCoinPath.Cost > bestLifePath.Cost)
-                    {
-                        bestPath = bestLifePath;
-                    }
-                    else
-                    {
-                        bestPath = bestCoinPath;
-                    }
-                }
-                else if (bestCoinPath == null && bestLifePath != null) bestPath = bestLifePath;
-                else if (bestCoinPath != null && bestLifePath == null) bestPath = bestCoinPath;
-
+                Console.WriteLine("bestToFollow is the coin at: " + _closestCoin.Coordinate.X + ", " + _closestCoin.Coordinate.Y);               
+            }
+            else
+            {
+                _bestToFollow = _closestLifePack;
+                Console.WriteLine("bestToFollow is the lifepack at: " + _closestLifePack.Coordinate.X + ", " + _closestLifePack.Coordinate.Y);
             }
         }
+        
+        
     }
 }

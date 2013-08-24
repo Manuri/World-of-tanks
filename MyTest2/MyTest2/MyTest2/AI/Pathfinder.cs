@@ -116,7 +116,7 @@ namespace MyTest2.AI
 
         
 
-        public void Pathfind(Point startingPoint)
+        public void Pathfind()
         {
             /*
              * 
@@ -125,78 +125,76 @@ namespace MyTest2.AI
              * 
              * */
             //Point startingPoint = FindCode(SquareContent.me);
-
-            Squares = Map.getMap.BoardBlocks;
-            //_squares = Map.getMap.BoardBlocks;
-           // Squares[1, 1].DistanceSteps = 24;
-           // _squares[1, 1].DistanceSteps = 24;
-
-            //Console.WriteLine("checking inside pathfind, _squares[1,1].distanceSteps="+_squares[1,1].DistanceSteps);
-            //Console.WriteLine("checking inside pathfind, inMap[1,1].distanceSteps="+Map.getMap.BoardBlocks[1,1].DistanceSteps);
-
-            int heroX = startingPoint.X;
-            int heroY = startingPoint.Y;
-            if (heroX == -1 || heroY == -1)
-            {
-                return;
-            }
-            /*
-             * 
-             * Hero starts at distance of 0.
-             * 
-             * */
-           // Console.WriteLine("before: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
-            _squares[heroX, heroY].DistanceSteps = 0;
-          //  Console.WriteLine("after: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
-
             while (true)
             {
-                bool madeProgress = false;
+                Point startingPoint = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
 
+                Squares = Map.getMap.BoardBlocks;
+
+                int heroX = startingPoint.X;
+                int heroY = startingPoint.Y;
+                if (heroX == -1 || heroY == -1)
+                {
+                    return;
+                }
                 /*
                  * 
-                 * Look at each square on the board.
+                 * Hero starts at distance of 0.
                  * 
                  * */
-                foreach (Point mainPoint in AllSquares())
-                {
-                    int x = mainPoint.X;
-                    int y = mainPoint.Y;
+                // Console.WriteLine("before: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
+                _squares[heroX, heroY].DistanceSteps = 0;
+                //  Console.WriteLine("after: inside pathfind(), Map.getMap.BoardBlocks[heroX,heroY].DistanceSteps: " + Map.getMap.BoardBlocks[heroX, heroY].DistanceSteps);
 
-                    //Console.WriteLine("inside pathfind(), mainPoint: "+mainPoint.X+", "+mainPoint.Y);
+                while (true)
+                {
+                    bool madeProgress = false;
 
                     /*
                      * 
-                     * If the square is open, look through valid moves given
-                     * the coordinates of that square.
+                     * Look at each square on the board.
                      * 
                      * */
-                    if (SquareOpen(x, y))
+                    foreach (Point mainPoint in AllSquares())
                     {
-                        int passHere = _squares[x, y].DistanceSteps;
-                       // Console.WriteLine("inside pathfind(), pass here: "+passHere);
+                        int x = mainPoint.X;
+                        int y = mainPoint.Y;
 
-                        foreach (Point movePoint in ValidMoves(x, y))
+                        //Console.WriteLine("inside pathfind(), mainPoint: "+mainPoint.X+", "+mainPoint.Y);
+
+                        /*
+                         * 
+                         * If the square is open, look through valid moves given
+                         * the coordinates of that square.
+                         * 
+                         * */
+                        if (SquareOpen(x, y))
                         {
-                            int newX = movePoint.X;
-                            int newY = movePoint.Y;
-                            int newPass = passHere + 1;
-                            //Console.WriteLine("inside pathfind(), movepoint: "+movePoint.X+"' "+movePoint.Y);
-                            //Console.WriteLine("inside pathfind(), newpass: " + newPass);
-                            //Console.WriteLine("inside pathfind(), _squares[newX, newY].DistanceSteps: " + _squares[newX, newY].DistanceSteps);
+                            int passHere = _squares[x, y].DistanceSteps;
+                            // Console.WriteLine("inside pathfind(), pass here: "+passHere);
 
-                            if (_squares[newX, newY].DistanceSteps > newPass)
+                            foreach (Point movePoint in ValidMoves(x, y))
                             {
-                                _squares[newX, newY].DistanceSteps = newPass;
-                                madeProgress = true;
-                               // Console.WriteLine("madeProgress");
+                                int newX = movePoint.X;
+                                int newY = movePoint.Y;
+                                int newPass = passHere + 1;
+                                //Console.WriteLine("inside pathfind(), movepoint: "+movePoint.X+"' "+movePoint.Y);
+                                //Console.WriteLine("inside pathfind(), newpass: " + newPass);
+                                //Console.WriteLine("inside pathfind(), _squares[newX, newY].DistanceSteps: " + _squares[newX, newY].DistanceSteps);
+
+                                if (_squares[newX, newY].DistanceSteps > newPass)
+                                {
+                                    _squares[newX, newY].DistanceSteps = newPass;
+                                    madeProgress = true;
+                                    // Console.WriteLine("madeProgress");
+                                }
                             }
                         }
                     }
-                }
-                if (!madeProgress)
-                {
-                    break;
+                    if (!madeProgress)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -269,18 +267,20 @@ namespace MyTest2.AI
         }
 
        // public void HighlightPath(Point startingPoint)
-        public Path HighlightPath(Point startingPoint)
+        public void HighlightPath(ref ClosestTreasure treasure)
         {
+            Console.WriteLine("Highlighting path to treasure point: "+treasure.Coordinate.X+", "+treasure.Coordinate.Y);
             /*
              * 
              * Mark the path from monster to hero.
              * 
              * */
            // Point startingPoint = FindCode(goal);
-            int pointX = startingPoint.X;
-            int pointY = startingPoint.Y;
-            path = new LinkedList<Point>();
-            cost = 0;
+            /*int pointX = startingPoint.X;
+            int pointY = startingPoint.Y;*/
+
+            int pointX = treasure.Coordinate.X;
+            int pointY = treasure.Coordinate.Y;
 
             // Mytesting
            // Console.WriteLine("monster point: " + pointX + " " + pointY);
@@ -291,7 +291,6 @@ namespace MyTest2.AI
             if (pointX == -1 && pointY == -1)
             {
                 Console.WriteLine("inside if");
-                return null;
             }
 
             while (true)
@@ -351,24 +350,17 @@ namespace MyTest2.AI
 
                         _squares[lowestPoint.X, lowestPoint.Y].IsPath = true;
 
-                        //my testing
-                        //Console.WriteLine("step" + step + " " + lowestPoint.X + ", " + lowestPoint.Y);
-                        //thePath[step] = new Point(lowestPoint.X, lowestPoint.Y);
-                        //path.AddFirst(new Point(lowestPoint.X, lowestPoint.Y)); //removed to solve outofmemoryexception
                         try
                         {
-                            path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);
+                            //path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);
+                            treasure.Path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);
+                            Console.WriteLine("path highlighting "+treasure.Path.First.Value.X+" "+treasure.Path.First.Value.Y);
                         }
                         catch (OutOfMemoryException oome)
                         {
                             //Console.WriteLine(oome.Message);
                             Console.WriteLine("oome Exception at HighlightPath");
                         }
-
-                        cost += 1;
-                        //Console.WriteLine("cost adding.. "+cost);
-                        //step++;
-                        //my testing over
 
                         pointX = lowestPoint.X;
                         pointY = lowestPoint.Y;
@@ -387,13 +379,13 @@ namespace MyTest2.AI
                      * We went from monster to hero, so we're finished.
                      * 
                      * */                  
-                    //break;
+                    
                     //Console.WriteLine("path marked");
-                    path.AddLast(points[startingPoint.X,startingPoint.Y]);
-                    return new Path(path,cost);
+                    treasure.Path.AddLast(points[treasure.Coordinate.X,treasure.Coordinate.Y]);
+                    Console.WriteLine("path highlighting " + treasure.Path.Last.Value.X + " " + treasure.Path.Last.Value.Y);
+                    break;
                 }
             }
-            return null;
         }
 
         private static IEnumerable<Point> AllSquares()
@@ -435,17 +427,8 @@ namespace MyTest2.AI
      
         }
 
-        public Path getShortestpath(Point me, Point goal)
-        {
-            Pathfind(me);
-            return HighlightPath(goal);
-        }
 
-        public List<Path> sortAcoordingToCosts(ref List<Path> pathList)
-        {
-            pathList.Sort();
-            return pathList;
-        }   
+      
     }
     }
 

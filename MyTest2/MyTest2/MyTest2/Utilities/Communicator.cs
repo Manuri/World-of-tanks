@@ -14,7 +14,9 @@ namespace MyTest2.Utilities
     {
         private static Communicator instance;
         private string serverIP = "127.0.0.1";
+      //  private string serverIP = "192.168.1.3";
         private string clientIP = "127.0.0.1";
+      //  private string clientIP = "192.168.1.2";
 
         private Communicator() { }
 
@@ -89,17 +91,16 @@ namespace MyTest2.Utilities
         {
 
             IPAddress ip = IPAddress.Parse(clientIP);
-            TcpListener listener;
-            Socket s;
+            
+            
             //Console.WriteLine("Waiting for a connection.....");
             while (true)
             {
-                //TcpListener listener = new TcpListener(ip, 7000);
-                listener = new TcpListener(ip, 7000);
+                TcpListener listener = new TcpListener(ip, 7000);
 
                 listener.Start();
                 //Socket s = listener.AcceptSocket();
-                s = listener.AcceptSocket();
+                Socket s = listener.AcceptSocket();
                 if (s.Connected)
                 {
                     //Console.WriteLine("\nConnection accepted from " + s.RemoteEndPoint);

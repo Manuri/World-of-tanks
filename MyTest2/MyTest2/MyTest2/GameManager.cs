@@ -148,8 +148,8 @@ namespace MyTest2
             Thread playerStatUpdater = new Thread(Statistics.getStatistics.checkPlayers);
             playerStatUpdater.Start();
 
-            Thread treasureStatUpdater = new Thread(Statistics.getStatistics.findShortestPathsToTreasures);
-            treasureStatUpdater.Start();
+            Thread distanceUpdater = new Thread(Pathfinder.getPathFinder.Pathfind);
+            distanceUpdater.Start();
 
             Thread aiOperator = new Thread(AIBrain.getAI.starter);
             aiOperator.Start();

@@ -1,6 +1,1 @@
-remove console.writelines from d.
-changed move function.
-changed thread.sleep in starter()
-
-/////////////////////////////
-I guess theres some socket problem. so messages don't go. So check this using two machines.
+changing AI in e 

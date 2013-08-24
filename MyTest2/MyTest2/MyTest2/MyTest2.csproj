@@ -109,7 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\AIBrain.cs" />
-    <Compile Include="AI\Path.cs" />
+    <Compile Include="AI\ClosestTreasure.cs" />
     <Compile Include="AI\Pathfinder.cs" />
     <Compile Include="AI\Square.cs" />
     <Compile Include="AI\Statistics.cs" />

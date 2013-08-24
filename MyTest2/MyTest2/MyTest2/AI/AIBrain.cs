@@ -15,7 +15,6 @@ namespace MyTest2.AI
         private static AIBrain instance;
 
         String[] messages;
-        LinkedList<LinkedList<Point>> pathList;
 
 
         public AIBrain()
@@ -42,70 +41,34 @@ namespace MyTest2.AI
             }
         }
 
+
+
         public void starter()
         {
-            while (true)
-            {
-               // if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
-               // {
-                //    shoot();
-                    //Console.WriteLine("entered starter");
-               // }
-               // else
-               // {
-                    Move();
-                    //Console.WriteLine("entered starter");
-               // }
-                Thread.Sleep(1000);
-            }
+            /*  while (true)
+              {
+                 // if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
+                 // {
+                  //    shoot();
+                      //Console.WriteLine("entered starter");
+                 // }
+                 // else
+                 // {
+                      Move();
+                      //Console.WriteLine("entered starter");
+                 // }
+                  Thread.Sleep(1000);
+              }*/
+            System.Timers.Timer aTimer = new System.Timers.Timer(1000);
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            aTimer.Enabled = true;
+            GC.KeepAlive(aTimer);
         }
 
-        private void Move()
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            Path thePath = Statistics.getStatistics.BestPath;
-            Console.WriteLine("entered move");
-            if (thePath != null)
-            {
-                if (thePath.PointList != null)
-                {
-                    if (thePath.PointList.First != null)
-                    {
-                        if (thePath.PointList.First.Next != null)
-                        {
-                            Point block = thePath.PointList.First.Next.Value;
-                            Console.WriteLine("move to "+block.X+", "+block.Y);
-                            Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
-                            Console.WriteLine("I'm at "+me.X+", "+me.Y);
-                            if (me.X < block.X)
-                            {
-                                GameManager.getGameManager.sendMessage("RIGHT#");
-                                Console.WriteLine("right");
-                            }
-                            else if (me.X > block.X)
-                            {
-                                GameManager.getGameManager.sendMessage("LEFT#");
-                                Console.WriteLine("left");
-                            }
-                            else if (me.Y < block.Y)
-                            {
-                                GameManager.getGameManager.sendMessage("DOWN#");
-                                Console.WriteLine("down");
-                            }
-                            else if (me.Y > block.Y)
-                            {
-                                GameManager.getGameManager.sendMessage("UP#");
-                                Console.WriteLine("up");
-                            }
-                        }
-                        else Console.WriteLine("thePath.PointList.first.next is null");
-                    }
-                    else Console.WriteLine("thePath.PointList.first is null");
-                }
-                else Console.WriteLine("thePath.PointList is null");
-            }
-            else Console.WriteLine("thePath null");
+            Move();
         }
-
         private void shoot()
         {
             Player me = Map.getMap.AllTanks[Map.getMap.MyIndex];
@@ -153,7 +116,7 @@ namespace MyTest2.AI
                         break;
                 }
             }
-            else if(Statistics.getStatistics.PlayerLeft)
+            else if (Statistics.getStatistics.PlayerLeft)
             {
                 switch (me.Direction)
                 {
@@ -170,6 +133,70 @@ namespace MyTest2.AI
 
         }
 
+        private void Move()
+        {
+            Statistics.getStatistics.findLeastDistanceTreasures();
 
+            if (Statistics.getStatistics._closestCoin.Cost != 10000 || Statistics.getStatistics._closestLifePack.Cost != 10000)
+            {
+               /* Pathfinder.getPathFinder.HighlightPath(ref Statistics.getStatistics._closestCoin);
+                Pathfinder.getPathFinder.HighlightPath(ref Statistics.getStatistics._closestLifePack);
+
+                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestCoin, false);
+                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestLifePack, true);
+
+                Statistics.getStatistics.findBestTreasureToFollow();*/
+
+                /*
+                 * First set real cost to closest coin and closest lifepack. Then find the best one to follow. 
+                 * Then mark it's path.
+                 */
+
+                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestCoin, false);
+                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestLifePack, true);
+
+                Statistics.getStatistics.findBestTreasureToFollow();
+
+                Pathfinder.getPathFinder.HighlightPath(ref Statistics.getStatistics._bestToFollow);
+
+                Point block;
+                if (Statistics.getStatistics._bestToFollow != null)
+                {
+                    if (Statistics.getStatistics._bestToFollow.Path != null)
+                    {
+                        if (Statistics.getStatistics._bestToFollow.Path.First != null)
+                        {
+                            block = Statistics.getStatistics._bestToFollow.Path.First.Next.Value;
+
+                            Console.WriteLine("move to " + block.X + ", " + block.Y);
+                            Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
+                            Console.WriteLine("I'm at " + me.X + ", " + me.Y);
+                            if (me.X < block.X)
+                            {
+                                GameManager.getGameManager.sendMessage("RIGHT#");
+                                Console.WriteLine("right");
+                            }
+                            else if (me.X > block.X)
+                            {
+                                GameManager.getGameManager.sendMessage("LEFT#");
+                                Console.WriteLine("left");
+                            }
+                            else if (me.Y < block.Y)
+                            {
+                                GameManager.getGameManager.sendMessage("DOWN#");
+                                Console.WriteLine("down");
+                            }
+                            else if (me.Y > block.Y)
+                            {
+                                GameManager.getGameManager.sendMessage("UP#");
+                                Console.WriteLine("up");
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
     }
 }
