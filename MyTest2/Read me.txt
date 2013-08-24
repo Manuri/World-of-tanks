@@ -1,2 +1,2 @@
-there is a little delay in healthpack dissapearing.
-coinpiles seem okay.
+put a hashtable instead of list for coinlist and lifepacklist. now seems quicker and more accurate.
+added a random algorithm for AI.

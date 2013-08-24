@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
+//using System.Drawing;
+using Microsoft.Xna.Framework;
 
 namespace MyTest2.AI
 {
@@ -263,7 +264,8 @@ namespace MyTest2.AI
                  * with the lowest number of steps marked.
                  * 
                  * */
-                Point lowestPoint = Point.Empty;
+                //Point lowestPoint = Point.Empty;
+                Point lowestPoint = new Point(0, 0);
                 int lowest = 10000;
 
                 foreach (Point movePoint in ValidMoves(pointX, pointY))
@@ -302,7 +304,8 @@ namespace MyTest2.AI
                     break;
                 }
 
-                if (_squares[pointX, pointY].ContentCode == SquareContent.me)
+               // if (_squares[pointX, pointY].ContentCode == SquareContent.me)
+                if (pointX == Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate.X && pointY == Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate.Y)
                 {
                     /*
                      * 

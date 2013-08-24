@@ -60,6 +60,7 @@ namespace MyTest2
                         Console.WriteLine(line);
                         //createMyPlayerInMap(token);
                         setUpPlayers(token);
+                        startMyPlayer();
                         break;
 
                     case 'G':
@@ -146,6 +147,12 @@ namespace MyTest2
                 tanks[j] = new Player(index, x, y, direction);
                 Console.WriteLine("Player added. IndexNo: " + tanks[j].PlayerIndexNo + " at " + tanks[j].Coordinate.X + ", " + tanks[j].Coordinate.Y);
             }
+        }
+
+        private void startMyPlayer()
+        {
+            Thread aiOperator = new Thread(AIBrain.getAI.starter);
+            aiOperator.Start();
         }
 
         private void createBlocks(String[] theToken, int tokenIndex, SquareContent content)
@@ -243,43 +250,19 @@ namespace MyTest2
 
         private void removeCoinsIfAPlayerSteppedOn(Player tank)
         {
-            List<CoinPile> removeList = new List<CoinPile>();
-            foreach (CoinPile coin in Map.getMap.CoinList)
+            if (Map.getMap.CoinList.ContainsKey(tank.Coordinate))
             {
-                if (coin.Coordinate == tank.Coordinate)
-                {
-                    removeList.Add(coin);
-                }
+                Map.getMap.CoinList.Remove(tank.Coordinate);
             }
-
-            if (removeList.Count != 0)
-            {
-                foreach (CoinPile coin in removeList)
-                {
-                    Map.getMap.CoinList.Remove(coin);
-                }
-            }
-
         }
 
         private void removeLifePacksIfAPlayerSteppedOn(Player tank)
         {
-            List<Treasure> removeList = new List<Treasure>();
-            foreach (Treasure lifePack in Map.getMap.LifePackList)
+            if (Map.getMap.LifePackList.ContainsKey(tank.Coordinate))
             {
-                if (lifePack.Coordinate == tank.Coordinate)
-                {
-                    removeList.Add(lifePack);
-                }
+                Map.getMap.LifePackList.Remove(tank.Coordinate);
             }
 
-            if (removeList.Count != 0)
-            {
-                foreach (Treasure lifePack in removeList)
-                {
-                    Map.getMap.LifePackList.Remove(lifePack);
-                }
-            }
 
         }
 
@@ -322,7 +305,7 @@ namespace MyTest2
             lifeTime = int.Parse(token[2]);
             value = int.Parse(token[3]);
 
-            Map.getMap.CoinList.Add(new CoinPile(x,y,value,lifeTime));
+            Map.getMap.CoinList.Add(new Point(x,y),new CoinPile(x,y,value,lifeTime));
             Console.WriteLine("Coinpile added. Value: "+value);
         }
 
@@ -342,14 +325,15 @@ namespace MyTest2
             y = int.Parse(token[1].Split(',')[1]);
             lifeTime = int.Parse(token[2]);
 
-            Map.getMap.LifePackList.Add(new Treasure(x,y,lifeTime));
+            //Map.getMap.LifePackList.Add(new Treasure(x,y,lifeTime));
+            Map.getMap.LifePackList.Add(new Point(x,y), new Treasure(x, y, lifeTime));
             Console.WriteLine("LifePack added. It's lifetime: "+lifeTime);
         }
 
         public void removeCoinsFromMap(CoinPile coin)
         {
             //this needs to be called when a timer expires
-            Map.getMap.CoinList.Remove(coin);
+            Map.getMap.CoinList.Remove(coin.Coordinate);
             Console.WriteLine("coinpile removed.value: "+coin.Value);
 
         }
@@ -357,7 +341,8 @@ namespace MyTest2
         public void removeLifepacksFromMap(Treasure lifePack)
         {
             //this needs to be called when a timer expires
-            Map.getMap.LifePackList.Remove(lifePack);
+            //Map.getMap.LifePackList.Remove(lifePack);
+            Map.getMap.LifePackList.Remove(lifePack.Coordinate);
             Console.WriteLine("lifepack removed.lifetime: " + lifePack.LifeTime);
         }
     }

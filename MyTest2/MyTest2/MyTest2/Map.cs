@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MyTest2.Beans;
 using MyTest2.AI;
+using Microsoft.Xna.Framework;
 
 namespace MyTest2
 {
@@ -11,10 +12,9 @@ namespace MyTest2
     {
         private static Map instance;
 
-        //private MyPlayer _myTank;
         private Player[] _allTanks;
-        private List<CoinPile> _coinList;
-        private List<Treasure> _lifePackList;
+        private Dictionary<Point,CoinPile> _coinList;
+        private Dictionary<Point, Treasure> _lifePackList;
         private CompleteSquare[,] _boardBlocks;
         private int _myIndex;
         private int _noOfPlayers;
@@ -23,8 +23,8 @@ namespace MyTest2
         public Map()
         {
             _allTanks = new Player[5];
-            _coinList = new List<CoinPile>();
-            _lifePackList = new List<Treasure>();
+            _coinList = new Dictionary<Point,CoinPile>();
+            _lifePackList = new Dictionary<Point, Treasure>();
             _gridLength = 10;
             _boardBlocks = new CompleteSquare[GridLength,GridLength];
             _noOfPlayers = 0;
@@ -41,12 +41,6 @@ namespace MyTest2
                 return instance;
             }
         }
-
-       /* public MyPlayer MyTank
-        {
-            get { return _myTank; }
-            set { _myTank = value; }
-        }*/
 
         public int GridLength
         {
@@ -78,12 +72,14 @@ namespace MyTest2
             set { _boardBlocks = value; }
         }
 
-        public List<CoinPile> CoinList
+
+        public Dictionary<Point,CoinPile> CoinList
         {
             get { return _coinList; }
         }
 
-        public List<Treasure> LifePackList
+
+        public Dictionary<Point, Treasure> LifePackList
         {
             get { return _lifePackList; }
         }

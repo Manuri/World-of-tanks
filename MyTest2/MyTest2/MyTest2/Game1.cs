@@ -36,8 +36,10 @@ namespace MyTest2
         
         CompleteSquare[,] bd;
         Player[] tanks = new Player[5];
-        List<CoinPile> coinList = new List<CoinPile>();
-        private List<Treasure> lifePackList = new List<Treasure>();
+
+        private Dictionary<Point, CoinPile> coinList = new Dictionary<Point, CoinPile>();
+
+        private Dictionary<Point, Treasure> lifePackList = new Dictionary<Point, Treasure>();
 
         public Game1()
         {
@@ -151,7 +153,6 @@ namespace MyTest2
         private void drawObstacle(int x, int y, int type)
         {
             int width = (int)widthOfABlock;
-           // Rectangle brickRectangle = new Rectangle(widthOfABlock * x, widthOfABlock * y, widthOfABlock, widthOfABlock);
             Rectangle brickRectangle = new Rectangle(width * x, width * y, width, width);
 
             spriteBatch.Draw(obstacleTextures[type], brickRectangle, Color.White);
@@ -209,13 +210,7 @@ namespace MyTest2
             {
                 if (tank != null)
                 {
-                    //Console.WriteLine("not null");
-
-                    //tank.ScreenPosition = new Vector2((tank.Coordinate.X) * (screenWidth/20) + 17.5f, (tank.Coordinate.Y) * (screenHeight/20) + 17.5f);
                     tank.ScreenPosition = new Vector2((tank.Coordinate.X) * widthOfABlock + widthOfABlock / 2, (tank.Coordinate.Y) * widthOfABlock + widthOfABlock / 2);
-
-                    //Console.WriteLine(tank.Coordinate.X + ", " + tank.Coordinate.Y);
-                    //Console.WriteLine(tank.ScreenPosition.X + ": " + tank.ScreenPosition.Y);
                 }
             }
 
@@ -226,24 +221,22 @@ namespace MyTest2
             coinList = Map.getMap.CoinList;
             int width = (int)widthOfABlock;
 
-            Rectangle coinRectangle; 
-            /*foreach (CoinPile coinpile in coinList) 
+            Rectangle coinRectangle;
+
+           /* foreach(var pair in coinList)
             {
-                if (coinpile.IsPresent)
+                if (pair.Value.IsPresent)
                 {
-                    coinRectangle = new Rectangle(width * coinpile.Coordinate.X, width * coinpile.Coordinate.Y, width, width);
+                    coinRectangle = new Rectangle(width * pair.Value.Coordinate.X, width * pair.Value.Coordinate.Y, width, width);
                     spriteBatch.Draw(coin, coinRectangle, Color.White);
                 }
             }*/
 
-            for (int i = 0; i < coinList.Count; i++)
+            var pilesToDraw = coinList.Values.Where(p => p.IsPresent).ToList();
+            foreach (var c in pilesToDraw)
             {
-                CoinPile c = coinList.ElementAt(i);
-                if (c.IsPresent)
-                {
-                    coinRectangle = new Rectangle(width * c.Coordinate.X, width * c.Coordinate.Y, width, width);
-                    spriteBatch.Draw(coin, coinRectangle, Color.White);
-                }
+                coinRectangle = new Rectangle(width * c.Coordinate.X, width * c.Coordinate.Y, width, width);
+                spriteBatch.Draw(coin, coinRectangle, Color.White);
             }
         }
 
@@ -253,24 +246,23 @@ namespace MyTest2
             int width = (int)widthOfABlock;
 
             Rectangle lifePackRectangle;
-           /* foreach (Treasure lifepack in lifePackList)
+
+            /*foreach (var pair in lifePackList)
             {
-                if (lifepack.IsPresent)
-                {
-                    lifePackRectangle = new Rectangle(width * lifepack.Coordinate.X, width * lifepack.Coordinate.Y, width, width);
-                    spriteBatch.Draw(lifePack, lifePackRectangle, Color.White);
-                }
+               if (pair.Value.IsPresent)
+               {
+                  lifePackRectangle = new Rectangle(width * pair.Value.Coordinate.X, width * pair.Value.Coordinate.Y, width, width);
+                  spriteBatch.Draw(lifePack, lifePackRectangle, Color.White);
+               }
             }*/
 
-            for (int i = 0; i < lifePackList.Count; i++)
+            var lifePacksToDraw = lifePackList.Values.Where(lp => lp.IsPresent).ToList();
+            foreach (var lp in lifePacksToDraw)
             {
-                Treasure lp = lifePackList.ElementAt(i);
-                if (lp.IsPresent)
-                {
-                    lifePackRectangle = new Rectangle(width * lp.Coordinate.X, width * lp.Coordinate.Y, width, width);
-                    spriteBatch.Draw(lifePack, lifePackRectangle, Color.White);
-                }
+                lifePackRectangle = new Rectangle(width * lp.Coordinate.X, width * lp.Coordinate.Y, width, width);
+                spriteBatch.Draw(lifePack, lifePackRectangle, Color.White);
             }
+            
         }
 
        
