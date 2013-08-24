@@ -59,7 +59,7 @@ namespace MyTest2.AI
                  // }
                   Thread.Sleep(1000);
               }*/
-            System.Timers.Timer aTimer = new System.Timers.Timer(1000);
+            System.Timers.Timer aTimer = new System.Timers.Timer(1400);
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Enabled = true;
             GC.KeepAlive(aTimer);
@@ -67,16 +67,23 @@ namespace MyTest2.AI
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            Move();
+            if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
+            {
+                shoot();
+            }
+            else
+            {
+                Statistics.getStatistics.decideTheMove();
+            }
         }
         private void shoot()
         {
             Player me = Map.getMap.AllTanks[Map.getMap.MyIndex];
 
-            Console.WriteLine("entered shoot");
+           // Console.WriteLine("entered shoot");
             if (Statistics.getStatistics.PlayerUp)
             {
-                switch (me.Direction)
+              /*  switch (me.Direction)
                 {
                     case 0:
                         GameManager.getGameManager.sendMessage("SHOOT#");
@@ -86,11 +93,22 @@ namespace MyTest2.AI
                         GameManager.getGameManager.sendMessage("UP#");
                         Console.WriteLine("up");
                         break;
+                }*/
+
+                if (me.Direction == 0)
+                {
+                    GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
+                }
+                else
+                {
+                    GameManager.getGameManager.sendMessage("UP#");
+                    Console.WriteLine("up");
                 }
             }
             else if (Statistics.getStatistics.PlayerRight)
             {
-                switch (me.Direction)
+                /*switch (me.Direction)
                 {
                     case 1:
                         GameManager.getGameManager.sendMessage("SHOOT#");
@@ -100,11 +118,21 @@ namespace MyTest2.AI
                         GameManager.getGameManager.sendMessage("RIGHT#");
                         Console.WriteLine("right");
                         break;
+                }*/
+                if (me.Direction == 1)
+                {
+                    GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
+                }
+                else
+                {
+                    GameManager.getGameManager.sendMessage("RIGHT#");
+                    Console.WriteLine("right");
                 }
             }
             else if (Statistics.getStatistics.PlayerDown)
             {
-                switch (me.Direction)
+                /*switch (me.Direction)
                 {
                     case 2:
                         GameManager.getGameManager.sendMessage("SHOOT#");
@@ -114,11 +142,21 @@ namespace MyTest2.AI
                         GameManager.getGameManager.sendMessage("DOWN#");
                         Console.WriteLine("down");
                         break;
+                }*/
+                if (me.Direction == 2)
+                {
+                    GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
+                }
+                else
+                {
+                    GameManager.getGameManager.sendMessage("DOWN#");
+                    Console.WriteLine("down");
                 }
             }
             else if (Statistics.getStatistics.PlayerLeft)
             {
-                switch (me.Direction)
+                /*switch (me.Direction)
                 {
                     case 3:
                         GameManager.getGameManager.sendMessage("SHOOT#");
@@ -128,37 +166,23 @@ namespace MyTest2.AI
                         GameManager.getGameManager.sendMessage("LEFT#");
                         Console.WriteLine("left");
                         break;
+                }*/
+                if (me.Direction == 3)
+                {
+                    GameManager.getGameManager.sendMessage("SHOOT#");
+                    Console.WriteLine("shooting");
+                }
+                else
+                {
+                    GameManager.getGameManager.sendMessage("LEFT#");
+                    Console.WriteLine("left");
                 }
             }
 
         }
 
-        private void Move()
+        public void Move()
         {
-            Statistics.getStatistics.findLeastDistanceTreasures();
-
-            if (Statistics.getStatistics._closestCoin.Cost != 10000 || Statistics.getStatistics._closestLifePack.Cost != 10000)
-            {
-               /* Pathfinder.getPathFinder.HighlightPath(ref Statistics.getStatistics._closestCoin);
-                Pathfinder.getPathFinder.HighlightPath(ref Statistics.getStatistics._closestLifePack);
-
-                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestCoin, false);
-                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestLifePack, true);
-
-                Statistics.getStatistics.findBestTreasureToFollow();*/
-
-                /*
-                 * First set real cost to closest coin and closest lifepack. Then find the best one to follow. 
-                 * Then mark it's path.
-                 */
-
-                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestCoin, false);
-                Statistics.getStatistics.setRealCostsToPath(ref Statistics.getStatistics._closestLifePack, true);
-
-                Statistics.getStatistics.findBestTreasureToFollow();
-
-                Pathfinder.getPathFinder.HighlightPath(ref Statistics.getStatistics._bestToFollow);
-
                 Point block;
                 if (Statistics.getStatistics._bestToFollow != null)
                 {
@@ -166,37 +190,38 @@ namespace MyTest2.AI
                     {
                         if (Statistics.getStatistics._bestToFollow.Path.First != null)
                         {
-                            block = Statistics.getStatistics._bestToFollow.Path.First.Next.Value;
+                            if (Statistics.getStatistics._bestToFollow.Path.First.Next != null)
+                            {
+                                block = Statistics.getStatistics._bestToFollow.Path.First.Next.Value;
 
-                            Console.WriteLine("move to " + block.X + ", " + block.Y);
-                            Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
-                            Console.WriteLine("I'm at " + me.X + ", " + me.Y);
-                            if (me.X < block.X)
-                            {
-                                GameManager.getGameManager.sendMessage("RIGHT#");
-                                Console.WriteLine("right");
-                            }
-                            else if (me.X > block.X)
-                            {
-                                GameManager.getGameManager.sendMessage("LEFT#");
-                                Console.WriteLine("left");
-                            }
-                            else if (me.Y < block.Y)
-                            {
-                                GameManager.getGameManager.sendMessage("DOWN#");
-                                Console.WriteLine("down");
-                            }
-                            else if (me.Y > block.Y)
-                            {
-                                GameManager.getGameManager.sendMessage("UP#");
-                                Console.WriteLine("up");
+                                Console.WriteLine("move to " + block.X + ", " + block.Y);
+                                Point me = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
+                                Console.WriteLine("I'm at " + me.X + ", " + me.Y);
+                                if (me.X < block.X)
+                                {
+                                    GameManager.getGameManager.sendMessage("RIGHT#");
+                                    Console.WriteLine("right");
+                                }
+                                else if (me.X > block.X)
+                                {
+                                    GameManager.getGameManager.sendMessage("LEFT#");
+                                    Console.WriteLine("left");
+                                }
+                                else if (me.Y < block.Y)
+                                {
+                                    GameManager.getGameManager.sendMessage("DOWN#");
+                                    Console.WriteLine("down");
+                                }
+                                else if (me.Y > block.Y)
+                                {
+                                    GameManager.getGameManager.sendMessage("UP#");
+                                    Console.WriteLine("up");
+                                }
                             }
                         }
                     }
                 }
 
             }
-
-        }
     }
 }

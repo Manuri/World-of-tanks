@@ -10,8 +10,7 @@ namespace MyTest2.AI
     class Pathfinder
     {
         private static Pathfinder instance;
-        //LinkedList<Point> path = new LinkedList<Point>();
-        LinkedList<Point> path;
+
         // Movements is an array of various directions.        
         Point[] _movements;
 
@@ -20,7 +19,6 @@ namespace MyTest2.AI
 
         static Point[,] points;
 
-        int cost = 0;
 
         public static Pathfinder getPathFinder
         {
@@ -125,8 +123,8 @@ namespace MyTest2.AI
              * 
              * */
             //Point startingPoint = FindCode(SquareContent.me);
-            while (true)
-            {
+           // while (true)
+            //{
                 Point startingPoint = Map.getMap.AllTanks[Map.getMap.MyIndex].Coordinate;
 
                 Squares = Map.getMap.BoardBlocks;
@@ -172,8 +170,9 @@ namespace MyTest2.AI
                         {
                             int passHere = _squares[x, y].DistanceSteps;
                             // Console.WriteLine("inside pathfind(), pass here: "+passHere);
-
-                            foreach (Point movePoint in ValidMoves(x, y))
+                            
+                            //mytesting
+                            /*foreach (Point movePoint in ValidMoves(x, y))
                             {
                                 int newX = movePoint.X;
                                 int newY = movePoint.Y;
@@ -188,7 +187,29 @@ namespace MyTest2.AI
                                     madeProgress = true;
                                     // Console.WriteLine("madeProgress");
                                 }
+                            }*/
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                int newX = points[x, y].X + _movements[i].X;
+                                int newY = points[x, y].Y + _movements[i].Y;
+
+                                if (ValidCoordinates(newX, newY) && SquareOpen(newX, newY))
+                                {
+                                    int newX1 = points[newX,newY].X;
+                                    int newY1 = points[newX, newY].Y;
+                                    int newPass = passHere + 1;
+
+                                    if (_squares[newX1, newY1].DistanceSteps > newPass)
+                                    {
+                                        _squares[newX1, newY1].DistanceSteps = newPass;
+                                        madeProgress = true;
+                                        // Console.WriteLine("madeProgress");
+                                    }
+                                }
+                                
                             }
+                            //my testing over
                         }
                     }
                     if (!madeProgress)
@@ -196,7 +217,7 @@ namespace MyTest2.AI
                         break;
                     }
                 }
-            }
+           // }
         }
 
         static private bool ValidCoordinates(int x, int y)
@@ -244,6 +265,12 @@ namespace MyTest2.AI
                     return true;
                 case SquareContent.me:
                     return true;
+                case SquareContent.Water:
+                    return false;
+                case SquareContent.Stone:
+                    return false;
+                case SquareContent.Brick:
+                    return false;
                 default:
                     return false;
             }
@@ -269,7 +296,7 @@ namespace MyTest2.AI
        // public void HighlightPath(Point startingPoint)
         public void HighlightPath(ref ClosestTreasure treasure)
         {
-            Console.WriteLine("Highlighting path to treasure point: "+treasure.Coordinate.X+", "+treasure.Coordinate.Y);
+           // Console.WriteLine("Highlighting path to treasure point: "+treasure.Coordinate.X+", "+treasure.Coordinate.Y);
             /*
              * 
              * Mark the path from monster to hero.
@@ -306,7 +333,7 @@ namespace MyTest2.AI
                 int lowest = 10000;
 
                 //my test
-              /*  foreach (Point movePoint in ValidMoves(pointX, pointY))
+                /*foreach (Point movePoint in ValidMoves(pointX, pointY))
                 {
                     int count = _squares[movePoint.X, movePoint.Y].DistanceSteps;
                     //Console.WriteLine("count before if "+count);
@@ -353,8 +380,23 @@ namespace MyTest2.AI
                         try
                         {
                             //path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);
-                            treasure.Path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);
-                            Console.WriteLine("path highlighting "+treasure.Path.First.Value.X+" "+treasure.Path.First.Value.Y);
+                           // Console.WriteLine("checking whether treasure is null "+treasure.Cost);
+
+                            if (treasure == null) Console.WriteLine("treasure is null");
+                            if (treasure.Path == null) Console.WriteLine("treasure.Path is null");
+
+                            try
+                            {
+                                treasure.Path.AddFirst(points[lowestPoint.X, lowestPoint.Y]);                               
+
+                            }
+                            catch (NullReferenceException nre)
+                            {
+                                Console.WriteLine(nre.Message);
+                                treasure.Path.Clear();//to avoid hitting obstacles. I guess it happened because I didnt clear the half added path.
+                                break;//to solve null reference problem. dont know whether this will work;
+                            }
+                           // Console.WriteLine("path highlighting "+treasure.Path.First.Value.X+" "+treasure.Path.First.Value.Y);
                         }
                         catch (OutOfMemoryException oome)
                         {
@@ -382,7 +424,7 @@ namespace MyTest2.AI
                     
                     //Console.WriteLine("path marked");
                     treasure.Path.AddLast(points[treasure.Coordinate.X,treasure.Coordinate.Y]);
-                    Console.WriteLine("path highlighting " + treasure.Path.Last.Value.X + " " + treasure.Path.Last.Value.Y);
+                    //Console.WriteLine("path highlighting " + treasure.Path.Last.Value.X + " " + treasure.Path.Last.Value.Y);
                     break;
                 }
             }

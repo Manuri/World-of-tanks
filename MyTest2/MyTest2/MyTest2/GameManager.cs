@@ -148,8 +148,11 @@ namespace MyTest2
             Thread playerStatUpdater = new Thread(Statistics.getStatistics.checkPlayers);
             playerStatUpdater.Start();
 
-            Thread distanceUpdater = new Thread(Pathfinder.getPathFinder.Pathfind);
-            distanceUpdater.Start();
+           /* Thread distanceUpdater = new Thread(Pathfinder.getPathFinder.Pathfind);
+            distanceUpdater.Start();*/
+
+         /*   Thread moveDecider = new Thread(Statistics.getStatistics.decideTheMove);
+            moveDecider.Start();*/
 
             Thread aiOperator = new Thread(AIBrain.getAI.starter);
             aiOperator.Start();

@@ -15,6 +15,7 @@ namespace MyTest2.AI
         public ClosestTreasure _closestCoin;
         public ClosestTreasure _closestLifePack;
         public ClosestTreasure _bestToFollow;
+        private int deadCount = 0;
 
         public Statistics()
         {
@@ -61,60 +62,76 @@ namespace MyTest2.AI
 
         public void checkPlayers()//use inside a thread to update the bool variables in this class
         {
-            Player myPlayer = Map.getMap.AllTanks[Map.getMap.MyIndex];
-            Player[] all = Map.getMap.AllTanks;
-            Player[] enemies=new Player[Map.getMap.NoOfPlayers-1];
-            int j = 0;
-            for (int i = 0; i < Map.getMap.NoOfPlayers;i++ )
-            {
-                if (all[i].Coordinate != all[Map.getMap.MyIndex].Coordinate)
+                Player myPlayer = Map.getMap.AllTanks[Map.getMap.MyIndex];
+                Player[] all = Map.getMap.AllTanks;
+                Player[] enemies = new Player[Map.getMap.NoOfPlayers - 1];
+                int j = 0;
+                for (int i = 0; i < Map.getMap.NoOfPlayers; i++)
                 {
-                    enemies[j] = all[i];
-                    j++;
-                }
-            }
-
-            while (true)
-            {
-               // foreach (Player p in Map.getMap.AllTanks)
-                foreach (Player p in enemies)
-                {
-                    if (p.IsAlive)
+                    if (all[i].Coordinate != all[Map.getMap.MyIndex].Coordinate)
                     {
-                        if (p.Coordinate.X == myPlayer.Coordinate.X)
+                        enemies[j] = all[i];
+                        j++;
+                    }
+                }
+
+                while (true)
+                {
+                    // foreach (Player p in Map.getMap.AllTanks)
+                   // foreach (Player p in enemies)
+                    for (int i = 0; i < enemies.Length;i++ )
+                    {
+                        if (enemies[i].IsAlive)
                         {
-                            if (p.Coordinate.Y > myPlayer.Coordinate.Y && !_playerDown)
+                            if (enemies[i].Coordinate.X == myPlayer.Coordinate.X)
                             {
-                                // _playerUp = true;
-                                _playerDown = true;
+                                if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y && !_playerDown)
+                                {
+                                    // _playerUp = true;
+                                    _playerDown = true;
+                                }
+                                else if (!_playerUp)// _playerDown = true;
+                                    _playerUp = true;
+
                             }
-                            else if (!_playerUp)// _playerDown = true;
-                                _playerUp = true;
+                            else
+                            {
+                                _playerUp = false;
+                                _playerDown = false;
+                            }
+                            if (enemies[i].Coordinate.Y == myPlayer.Coordinate.Y)
+                            {
+                                if (enemies[i].Coordinate.X > myPlayer.Coordinate.X && !_playerRight)
+                                {
+                                    _playerRight = true;
+                                }
+                                else if (!_playerLeft) _playerLeft = true;
+                            }
+                            else
+                            {
+                                _playerLeft = false;
+                                _playerRight = false;
+                            }
 
                         }
                         else
                         {
-                            _playerUp = false;
-                            _playerDown = false;
-                        }
-                        if (p.Coordinate.Y == myPlayer.Coordinate.Y)
-                        {
-                            if (p.Coordinate.X > myPlayer.Coordinate.X && !_playerRight)
+                            deadCount++;
+                            if (deadCount == enemies.Length)
                             {
-                                _playerRight = true;
+                                _playerUp = false;
+                                _playerDown = false;
+                                _playerLeft = false;
+                                _playerRight = false;
+                                break;
                             }
-                            else if (!_playerLeft) _playerLeft = true;
-                        }
-                        else
-                        {
-                            _playerLeft = false;
-                            _playerRight = false;
                         }
 
                     }
+                    deadCount = 0;
                 }
-            }
         }
+        
 
         public void setRealCostsToPath(ref ClosestTreasure treasure, bool isLifePack)
         {
@@ -174,42 +191,49 @@ namespace MyTest2.AI
         {
             int coinMin = 10000;
             int lifePackMin = 10000;
-            int x=0;
-            int y=0;
+            int x1=0;
+            int y1=0;
+            int x2 = 0;
+            int y2 = 0;
             foreach (CoinPile c in Map.getMap.CoinList.Values)
             {
-                x = c.Coordinate.X;
-                y = c.Coordinate.Y;
+                x1 = c.Coordinate.X;
+                y1 = c.Coordinate.Y;
 
-                if (Pathfinder.getPathFinder.Squares[x, y].DistanceSteps < coinMin)
+                if (Pathfinder.getPathFinder.Squares[x1, y1].DistanceSteps < coinMin)
                 {
-                    coinMin = Pathfinder.getPathFinder.Squares[x, y].DistanceSteps;
+                    coinMin = Pathfinder.getPathFinder.Squares[x1, y1].DistanceSteps;
+                    Console.WriteLine(coinMin);
                 }
             }
-            _closestCoin.Coordinate = Pathfinder.getPathFinder.Squares[x, y].Coordinate;
+            _closestCoin.Coordinate = Pathfinder.getPathFinder.Squares[x1, y1].Coordinate;
             _closestCoin.Cost = coinMin;
             Console.WriteLine("closestCoin at " + _closestCoin.Coordinate.X + ", " + _closestCoin.Coordinate.Y + " cost: " + _closestCoin.Cost);
 
             foreach (Treasure lp in Map.getMap.LifePackList.Values)
             {
-                x = lp.Coordinate.X;
-                y = lp.Coordinate.Y;
+                x2 = lp.Coordinate.X;
+                y2 = lp.Coordinate.Y;
 
-                if (Pathfinder.getPathFinder.Squares[x, y].DistanceSteps < lifePackMin)
+                if (Pathfinder.getPathFinder.Squares[x2, y2].DistanceSteps < lifePackMin)
                 {
-                    lifePackMin = Pathfinder.getPathFinder.Squares[x, y].DistanceSteps;                    
+                    lifePackMin = Pathfinder.getPathFinder.Squares[x2, y2].DistanceSteps;
+                    Console.WriteLine(lifePackMin);
                 }
             }
-            _closestLifePack.Coordinate = Pathfinder.getPathFinder.Squares[x, y].Coordinate;
+            _closestLifePack.Coordinate = Pathfinder.getPathFinder.Squares[x2, y2].Coordinate;
             _closestLifePack.Cost = lifePackMin;
             Console.WriteLine("closestLifePack at " + _closestLifePack.Coordinate.X + ", " + _closestLifePack.Coordinate.Y + " cost: " + _closestLifePack.Cost);
         }
 
         public void findBestTreasureToFollow()
         {
-            if (_closestCoin.CompareTo(_closestLifePack) <= 1)
+            if (_closestCoin.CompareTo(_closestLifePack) >= 0)
             {
                 _bestToFollow = _closestCoin;
+
+                Console.WriteLine("coincost: " + _closestCoin.Cost);
+                Console.WriteLine("lifepack cost: "+ _closestLifePack.Cost);
 
                 Console.WriteLine("bestToFollow is the coin at: " + _closestCoin.Coordinate.X + ", " + _closestCoin.Coordinate.Y);               
             }
@@ -218,6 +242,39 @@ namespace MyTest2.AI
                 _bestToFollow = _closestLifePack;
                 Console.WriteLine("bestToFollow is the lifepack at: " + _closestLifePack.Coordinate.X + ", " + _closestLifePack.Coordinate.Y);
             }
+        }
+
+        public void decideTheMove()
+        {
+          //  while (true)
+          //  {
+                Pathfinder.getPathFinder.Pathfind();
+                findLeastDistanceTreasures();
+
+                if (_closestCoin.Cost != 10000 || _closestLifePack.Cost != 10000)
+                {
+                    /*
+                     * First set real cost to closest coin and closest lifepack. Then find the best one to follow. 
+                     * Then mark it's path.
+                     */
+
+                    setRealCostsToPath(ref _closestCoin, false);
+                    setRealCostsToPath(ref _closestLifePack, true);
+
+                    findBestTreasureToFollow();
+
+                    _bestToFollow.Path.Clear();
+                   // _bestToFollow.Path = new LinkedList<Point>();
+
+                  //  if (_bestToFollow == null) Console.WriteLine("_bestToFollow is null");
+
+                    Pathfinder.getPathFinder.HighlightPath(ref _bestToFollow);
+
+                    Pathfinder.getPathFinder.ClearLogic();
+
+                    AIBrain.getAI.Move();
+                }
+           // }
         }
         
         

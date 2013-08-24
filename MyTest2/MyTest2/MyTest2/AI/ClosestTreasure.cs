@@ -15,6 +15,7 @@ namespace MyTest2.AI
         public ClosestTreasure()
         {
             Path = new LinkedList<Point>();
+            Cost = 10000;
         }
 
         public Point Coordinate

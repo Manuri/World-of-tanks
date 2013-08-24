@@ -1,1 +1,10 @@
-changing AI in e 
+/*put pathfinding , setting real costs, finding betstofollow to a seperate thread.
+removed while true from pathfind()*/
+
+put deciding move() also in timers method. removed thread movedecider.
+
+I hadn't cleared the bestToFollow's path. I did it in this version.
+
+called clearLogic after highlighitng path.
+
+now working ! no exceptions arised so far. but doesnt work well with shooting.
