@@ -90,8 +90,6 @@ namespace MyTest2.AI
 
                 if (deadCount != enemies.Length)
                 {
-                    // foreach (Player p in Map.getMap.AllTanks)
-                    // foreach (Player p in enemies)
                     deadCount = 0;
                     for (int i = 0; i < enemies.Length; i++)
                     {
@@ -99,38 +97,29 @@ namespace MyTest2.AI
                         {
                             if (enemies[i].Coordinate.X == myPlayer.Coordinate.X)
                             {
-                                //if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y && !_playerDown)
+
                                 if (enemies[i].Coordinate.Y > myPlayer.Coordinate.Y)
                                 {
-                                    // _playerUp = true;
+
                                     _playerDown = true;
                                 }
-                                //else if (!_playerUp)// _playerDown = true;
+
                                 else
                                     _playerUp = true;
 
                             }
-                           /* else 
-                            {
-                                _playerUp = false;
-                                _playerDown = false;
-                            }*/
                             if (enemies[i].Coordinate.Y == myPlayer.Coordinate.Y)
                             {
-                                //if (enemies[i].Coordinate.X > myPlayer.Coordinate.X && !_playerRight)
+
                                 if (enemies[i].Coordinate.X > myPlayer.Coordinate.X )
                                 {
                                     _playerRight = true;
                                 }
-                                //else if (!_playerLeft)
+
                                 else
                                      _playerLeft = true;
                             }
-                          /*  else
-                            {
-                                _playerLeft = false;
-                                _playerRight = false;
-                            }*/
+
 
                         }
                         else
@@ -252,8 +241,6 @@ namespace MyTest2.AI
             {
                 _bestToFollow = _closestCoin;
 
- //               Console.WriteLine("coincost: " + _closestCoin.Cost);
- //               Console.WriteLine("lifepack cost: "+ _closestLifePack.Cost);
 
                 Console.WriteLine("bestToFollow is the coin at: " + _closestCoin.Coordinate.X + ", " + _closestCoin.Coordinate.Y);               
             }
@@ -266,8 +253,7 @@ namespace MyTest2.AI
 
         public void decideTheMove()
         {
-          //  while (true)
-          //  {
+
                 Pathfinder.getPathFinder.Pathfind();
                 findLeastDistanceTreasures();
 
@@ -284,15 +270,11 @@ namespace MyTest2.AI
                     findBestTreasureToFollow();
 
                     _bestToFollow.Path.Clear();
-                   // _bestToFollow.Path = new LinkedList<Point>();
-
-                  //  if (_bestToFollow == null) Console.WriteLine("_bestToFollow is null");
 
                     Pathfinder.getPathFinder.HighlightPath(ref _bestToFollow);
 
                     Pathfinder.getPathFinder.ClearLogic();
 
-                   // AIBrain.getAI.Move();
                 }
            // }
         }
