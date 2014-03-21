@@ -86,15 +86,6 @@ namespace MyTest2.AI
             }
         }
         
-       /* public void ClearSquares()
-        {
-             //Reset every square.
-             
-            foreach (Point point in AllSquares())
-            {
-                _squares[point.X, point.Y] = new CompleteSquare();
-            }
-        } */
 
         public void ClearLogic()
         {
@@ -171,23 +162,6 @@ namespace MyTest2.AI
                             int passHere = _squares[x, y].DistanceSteps;
                             // Console.WriteLine("inside pathfind(), pass here: "+passHere);
                             
-                            //mytesting
-                            /*foreach (Point movePoint in ValidMoves(x, y))
-                            {
-                                int newX = movePoint.X;
-                                int newY = movePoint.Y;
-                                int newPass = passHere + 1;
-                                //Console.WriteLine("inside pathfind(), movepoint: "+movePoint.X+"' "+movePoint.Y);
-                                //Console.WriteLine("inside pathfind(), newpass: " + newPass);
-                                //Console.WriteLine("inside pathfind(), _squares[newX, newY].DistanceSteps: " + _squares[newX, newY].DistanceSteps);
-
-                                if (_squares[newX, newY].DistanceSteps > newPass)
-                                {
-                                    _squares[newX, newY].DistanceSteps = newPass;
-                                    madeProgress = true;
-                                    // Console.WriteLine("madeProgress");
-                                }
-                            }*/
 
                             for (int i = 0; i < 4; i++)
                             {
@@ -278,19 +252,6 @@ namespace MyTest2.AI
             }
         }
 
-       /* private Point FindCode(SquareContent contentIn)
-        {
-            // Find the requested code and return the point.
-             
-            foreach (Point point in AllSquares())
-            {
-                if (_squares[point.X, point.Y].ContentCode == contentIn)
-                {
-                    return new Point(point.X, point.Y);
-                }
-            }
-            return new Point(-1, -1);
-        }*/
 
         #region higlighting path
 
@@ -310,11 +271,6 @@ namespace MyTest2.AI
             int pointX = treasure.Coordinate.X;
             int pointY = treasure.Coordinate.Y;
 
-            // Mytesting
-           // Console.WriteLine("monster point: " + pointX + " " + pointY);
-           // int step = 0;
-           // Point[] thePath = new Point[50];
-            //my testing over
 
             if (pointX == -1 && pointY == -1)
             {
