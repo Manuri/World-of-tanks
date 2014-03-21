@@ -93,11 +93,6 @@ namespace MyTest2
 
         public void setUpMap(String[] token)
         {
-            /*setUpPlayers(token);
-            createBlocks(token,6,SquareContent.Brick);
-            createBlocks(token, 7, SquareContent.Stone);
-            createBlocks(token, 8, SquareContent.Water);
-            createEmptyBlocks();*/
 
             createBlocks(token,2,SquareContent.Brick);
             createBlocks(token, 3, SquareContent.Stone);
@@ -109,9 +104,6 @@ namespace MyTest2
         public void createMyPlayerInMap(String[] token)
         {
             int index = Convert.ToInt32(token[1].ToCharArray()[1])-48;
-          /*  int x = Convert.ToInt32(token[2].ToCharArray()[1]);
-            int y = Convert.ToInt32(token[2].ToCharArray()[3]);
-            int direction = Convert.ToInt32(token[3].ToCharArray()[0]);*/
 
             Map.getMap.MyIndex = index;
             //Console.WriteLine("My tank's indexNo: " + Map.getMap.MyIndex);
@@ -135,10 +127,6 @@ namespace MyTest2
 
             for (int j = 0; j < noOfPlayers; j++)
             {
-               /* int index = Convert.ToInt32(playerInfo[j].ToCharArray()[1]);
-                int x = Convert.ToInt32(playerInfo[j].ToCharArray()[3]);
-                int y = Convert.ToInt32(playerInfo[j].ToCharArray()[5]);
-                int direction = Convert.ToInt32(playerInfo[j].ToCharArray()[7]);*/
 
                 String[] broken = playerInfo[j].Split(';');
 
@@ -154,14 +142,6 @@ namespace MyTest2
 
         private void startMyPlayer()
         {
-           // Thread playerStatUpdater = new Thread(Statistics.getStatistics.checkPlayers);
-           // playerStatUpdater.Start();
-
-           /* Thread distanceUpdater = new Thread(Pathfinder.getPathFinder.Pathfind);
-            distanceUpdater.Start();*/
-
-         /*   Thread moveDecider = new Thread(Statistics.getStatistics.decideTheMove);
-            moveDecider.Start();*/
 
             Thread aiOperator = new Thread(AIBrain.getAI.starter);
             aiOperator.Start();
@@ -221,10 +201,6 @@ namespace MyTest2
 
             for (int j = 0; j < noOfPlayers; j++)
             {
-                /*int x = playerInfo[j].ToCharArray()[3];
-                int y = playerInfo[j].ToCharArray()[5];
-                int direction = playerInfo[j].ToCharArray()[7];
-                int shot =  playerInfo[j].ToCharArray()[9];*/
 
                 String[] broken = playerInfo[j].Split(';');
 
@@ -307,15 +283,6 @@ namespace MyTest2
         {
             int x, y, lifeTime, value;
 
-            /*for the message format given in slides
-             *
-             * 
-            String[] coinInfo = token[1].Split(',');
-            x = int.Parse(coinInfo[0]);
-            y = int.Parse(coinInfo[1]);
-            lifeTime = int.Parse(coinInfo[2]);
-            value = int.Parse(coinInfo[3]);*/
-
             x = int.Parse(token[1].Split(',')[0]);
             y = int.Parse(token[1].Split(',')[1]);
             lifeTime = int.Parse(token[2]);
@@ -329,20 +296,11 @@ namespace MyTest2
         {
             int x, y, lifeTime;
 
-            /* for the message format given in slides
-             * 
-             * String[] coinInfo = token[1].Split(',');
-
-            x = int.Parse(coinInfo[0]);
-            y = int.Parse(coinInfo[1]);
-            lifeTime = int.Parse(coinInfo[2]);*/
 
             x = int.Parse(token[1].Split(',')[0]);
             y = int.Parse(token[1].Split(',')[1]);
             lifeTime = int.Parse(token[2]);
 
-            //Map.getMap.LifePackList.Add(new Treasure(x,y,lifeTime));
-           // Map.getMap.LifePackList.Add(new Point(x,y), new Treasure(x, y, lifeTime));
             Map.getMap.LifePackList.AddOrUpdate(new Point(x, y), new Treasure(x, y, lifeTime), (k, v) => new Treasure(x, y, lifeTime));
 
            // Console.WriteLine("LifePack added. It's lifetime: "+lifeTime);
