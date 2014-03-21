@@ -15,18 +15,9 @@ namespace MyTest2.AI
         private static AIBrain instance;
         private int previousGlobalUpdate;
 
-      //  String[] messages;
-
 
         public AIBrain()
         {
-           /* messages = new String[5];
-
-            messages[0] = "UP#";
-            messages[1] = "DOWN#";
-            messages[2] = "RIGHT#";
-            messages[3] = "LEFT#";
-            messages[4] = "SHOOT#";*/
 
             previousGlobalUpdate = 0;
 
@@ -56,9 +47,9 @@ namespace MyTest2.AI
                       if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
                       {
                           shoot();
-                          //Console.WriteLine("entered starter")                                     
+                                    
                       }
-                     // else if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
+
                       else
                       {
                           Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
@@ -69,39 +60,7 @@ namespace MyTest2.AI
                       }
                   }
               }
-        /*    while (true)
-            {
-                if (GameManager.getGameManager.globalUpdateCounter > previousGlobalUpdate)
-                {
-                    Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
-                    Console.WriteLine("globalUpdateCounter " + GameManager.getGameManager.globalUpdateCounter);
-                    Statistics.getStatistics.decideTheMove();
-                    Move();
-                    previousGlobalUpdate++;
-                }
-            }*/
-        }
-
-    /*    private void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            
-            
-              //  Statistics.getStatistics.checkPlayers();
-              //  if (Statistics.getStatistics.PlayerUp || Statistics.getStatistics.PlayerRight || Statistics.getStatistics.PlayerDown || Statistics.getStatistics.PlayerLeft)
-              //  {
-              //      shoot();
-              //  }
-              //  else 
-            if (GameManager.getGameManager.globalUpdateCounter>previousGlobalUpdate)
-                {
-                    Console.WriteLine("previousGlobalUpdate " + previousGlobalUpdate);
-                    Console.WriteLine("globalUpdateCounter "+GameManager.getGameManager.globalUpdateCounter);
-                    Statistics.getStatistics.decideTheMove();
-                    previousGlobalUpdate++;
-                }
-
-
-        }*/
+       
 
         private void shoot()
         {
@@ -110,17 +69,7 @@ namespace MyTest2.AI
            // Console.WriteLine("entered shoot");
             if (Statistics.getStatistics.PlayerUp)
             {
-              /*  switch (me.Direction)
-                {
-                    case 0:
-                        GameManager.getGameManager.sendMessage("SHOOT#");
-                        Console.WriteLine("shoot");
-                        break;
-                    default:
-                        GameManager.getGameManager.sendMessage("UP#");
-                        Console.WriteLine("up");
-                        break;
-                }*/
+
 
                 if (me.Direction == 0)
                 {
@@ -136,17 +85,7 @@ namespace MyTest2.AI
             }
             else if (Statistics.getStatistics.PlayerRight)
             {
-                /*switch (me.Direction)
-                {
-                    case 1:
-                        GameManager.getGameManager.sendMessage("SHOOT#");
-                        Console.WriteLine("shoot");
-                        break;
-                    default:
-                        GameManager.getGameManager.sendMessage("RIGHT#");
-                        Console.WriteLine("right");
-                        break;
-                }*/
+
                 if (me.Direction == 1)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
@@ -161,17 +100,7 @@ namespace MyTest2.AI
             }
             else if (Statistics.getStatistics.PlayerDown)
             {
-                /*switch (me.Direction)
-                {
-                    case 2:
-                        GameManager.getGameManager.sendMessage("SHOOT#");
-                        Console.WriteLine("shoot");
-                        break;
-                    default:
-                        GameManager.getGameManager.sendMessage("DOWN#");
-                        Console.WriteLine("down");
-                        break;
-                }*/
+
                 if (me.Direction == 2)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
@@ -186,17 +115,7 @@ namespace MyTest2.AI
             }
             else if (Statistics.getStatistics.PlayerLeft)
             {
-                /*switch (me.Direction)
-                {
-                    case 3:
-                        GameManager.getGameManager.sendMessage("SHOOT#");
-                        Console.WriteLine("shoot");
-                        break;
-                    default:
-                        GameManager.getGameManager.sendMessage("LEFT#");
-                        Console.WriteLine("left");
-                        break;
-                }*/
+
                 if (me.Direction == 3)
                 {
                     GameManager.getGameManager.sendMessage("SHOOT#");
